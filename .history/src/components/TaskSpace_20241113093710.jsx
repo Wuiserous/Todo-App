@@ -13,12 +13,9 @@ export default function TaskSpace(props) {
   });
 
   if (cards.length == 0) return (
-  <div className={`rounded-xl gap-2 p-2 hide-scrollbar overflow-auto col-start-2 row-start-2 row-end-5 ${props.bgColor}`}>
-      <div className="h-full flex flex-col gap-2 col-span-1 flex justify-center items-center">
-        <h1 className="text-[#A0A0A0]">No tasks added yet</h1>
-      </div>
-  </div>
-  )
+  <div className={`rounded-xl grid grid-cols-3 gap-2 p-2 hide-scrollbar overflow-auto col-start-2 row-start-2 row-end-5 ${props.bgColor}`}>
+      <div className="h-full flex flex-col gap-2 col-span-1"></div>
+  </div
 
   return (
     <div className={`rounded-xl grid grid-cols-3 gap-2 p-2 hide-scrollbar overflow-auto col-start-2 row-start-2 row-end-5 ${props.bgColor}`}>
