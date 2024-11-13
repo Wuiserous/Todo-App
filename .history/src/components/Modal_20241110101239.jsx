@@ -1,0 +1,11 @@
+export default function Modal(props) {
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center">
+        <div className="w-[500px] h-[400px] bg-white rounded-xl flex flex-col items-center text-black">
+            <div className="w-[500px] h-[400px] bg-white rounded-xl flex flex-col items-center text-black">
+            <h1>Add Your Todo</h1>
+        </div>
+        </div>
+      </div>
+    )
+}
