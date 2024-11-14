@@ -29,20 +29,17 @@ function App() {
   const [isUrgent, setIsUrgent] = useState(false);
   const [isImportant, setIsImportant] = useState(false);
   const [deadLineText, setDeadLineText] = useState('');
-  const [deadLineDate, setDeadLineDate] = useState('');
-  const [deadLineTime, setDeadLineTime] = useState('');
+  const [deadLineDate, setDeadLineDate] = useState();
+  const [deadLineTime, setDeadLineTime] = useState();
 
   const extractDateTime = (inputText) => {
     const result = chrono.parse(inputText)
 
     if (result.length > 0) {
       const parseDate = result[0].start.date();
-      console.log(parseDate)
-      setDeadLineDate(parseDate.toLocaleDateString());
-      setDeadLineTime(parseDate.toLocaleTimeString());
+      setDeadLineDate(parseDate.toLocalDateString());
+      setDeadLineTime(parseDate.toLocalTimeString());
     }
-    console.log(deadLineDate)
-    console.log(deadLineTime)
   }
 
 

@@ -36,10 +36,9 @@ function App() {
     const result = chrono.parse(inputText)
 
     if (result.length > 0) {
-      const parseDate = result[0].start.date();
-      console.log(parseDate)
-      setDeadLineDate(parseDate.toLocaleDateString());
-      setDeadLineTime(parseDate.toLocaleTimeString());
+      const parseeDate = result[0].start.date();
+      setDeadLineDate(parseDate.toLocalDateString());
+      setDeadLineTime(parseDate.toLocalTimeString());
     }
     console.log(deadLineDate)
     console.log(deadLineTime)

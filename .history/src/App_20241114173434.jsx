@@ -32,18 +32,7 @@ function App() {
   const [deadLineDate, setDeadLineDate] = useState('');
   const [deadLineTime, setDeadLineTime] = useState('');
 
-  const extractDateTime = (inputText) => {
-    const result = chrono.parse(inputText)
-
-    if (result.length > 0) {
-      const parseDate = result[0].start.date();
-      console.log(parseDate)
-      setDeadLineDate(parseDate.toLocaleDateString());
-      setDeadLineTime(parseDate.toLocaleTimeString());
-    }
-    console.log(deadLineDate)
-    console.log(deadLineTime)
-  }
+  e
 
 
   const toggleUrgent = () => setIsUrgent(!isUrgent);

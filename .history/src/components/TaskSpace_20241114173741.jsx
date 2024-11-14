@@ -79,7 +79,6 @@ export default function TaskSpace(props) {
               card.isUrgent ? 'Urgent' : 
               card.isImportant ? 'Important' : 'Normal'}
             </p>
-            <p>Deadline: {card.deadLineDate} {card.deadLineTime}</p>
             <div className="w-full h-fit flex flex-row gap-2 justify-end">
              <button className="focus:outline-none" onClick={() => props.deleteCard(index*3 + 2)}><MdOutlineDelete /></button>
             </div>

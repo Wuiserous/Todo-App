@@ -39,7 +39,7 @@ function App() {
       const parseDate = result[0].start.date();
       console.log(parseDate)
       setDeadLineDate(parseDate.toLocaleDateString());
-      setDeadLineTime(parseDate.toLocaleTimeString());
+      setDeadLineTime(parseDate.toLocalTimeString());
     }
     console.log(deadLineDate)
     console.log(deadLineTime)

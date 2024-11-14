@@ -16,7 +16,7 @@ import { BsExclamationTriangle } from "react-icons/bs";
 import { IoIosStarOutline } from "react-icons/io";
 import { IoIosTimer } from "react-icons/io";
 import DeadLineModal from './components/DeadLineModal';
-import * as chrono from 'chrono-node';
+import chrono from 'chrono-node';
 
 function App() {
   const [darkMode, setDarkMode] = useState(false)
@@ -29,20 +29,17 @@ function App() {
   const [isUrgent, setIsUrgent] = useState(false);
   const [isImportant, setIsImportant] = useState(false);
   const [deadLineText, setDeadLineText] = useState('');
-  const [deadLineDate, setDeadLineDate] = useState('');
-  const [deadLineTime, setDeadLineTime] = useState('');
+  const [deadLineDate, setDeadLineDate] = useState();
+  const [deadLineTime, setDeadLineTime] = useState();
 
   const extractDateTime = (inputText) => {
     const result = chrono.parse(inputText)
 
     if (result.length > 0) {
       const parseDate = result[0].start.date();
-      console.log(parseDate)
-      setDeadLineDate(parseDate.toLocaleDateString());
-      setDeadLineTime(parseDate.toLocaleTimeString());
+      setDeadLineDate(parseDate.toLocalDateString());
+      setDeadLineTime(parseDate.toLocalTimeString());
     }
-    console.log(deadLineDate)
-    console.log(deadLineTime)
   }
 
 
@@ -64,13 +61,9 @@ function App() {
       isUrgent,
       isImportant,
       deadLineDate,
-      deadLineTime
     };
     setTitle('');
     setDescription('');
-    setDeadLineText('');
-    setDeadLineDate('');
-    setDeadLineTime('');
     addCard(newCard);
   
     // Reset the priority states after adding the card
@@ -159,7 +152,6 @@ function App() {
       </LinkModal>
       <DeadLineModal Show={showDeadLineModal} hide={hideDeadLineModal}>
        <input 
-       className='text-white'
        type="text"
        value={deadLineText}
        onChange={(e) => setDeadLineText(e.target.value)}

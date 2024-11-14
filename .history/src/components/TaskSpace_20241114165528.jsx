@@ -15,7 +15,7 @@ export default function TaskSpace(props) {
   if (cards.length == 0) return (
   <div className={`rounded-xl gap-2 p-2 hide-scrollbar overflow-auto col-start-2 row-start-2 row-end-5 ${props.bgColor}`}>
       <div className="h-full flex flex-col gap-2 col-span-1 flex justify-center items-center">
-        <h1 className="text-[#A0A0A0] text-opacity-25">No tasks added yet</h1>
+        <h1 className="text-[#A0A0A0]">No tasks added yet</h1>
       </div>
   </div>
   )
@@ -33,9 +33,8 @@ export default function TaskSpace(props) {
               card.isUrgent ? 'Urgent' : 
               card.isImportant ? 'Important' : 'Normal'}
             </p>
-            <p>Deadline: {card.deadLineDate} {card.deadLineTime}</p>
             <div className="w-full h-fit flex flex-row gap-2 justify-end">
-             <button className="focus:outline-none" onClick={() => props.deleteCard(index*3 + 0)}><MdOutlineDelete /></button>
+             <button className="border-none focus:outline-none" onClick={() => props.deleteCard(index*3 + 0)}><MdOutlineDelete /></button>
             </div>
             {card.isUrgent && card.isImportant ? (<div className="w-10 h-5 absolute z-10 bg-[#D32F2F] bottom-[-21px] rounded-bl-lg rounded-br-xl right-[-1px]"></div>) : 
               card.isUrgent ? (<div className="w-10 h-5 absolute z-10 bg-[#FF5722] bottom-[-21px] rounded-bl-lg rounded-br-xl right-[-1px]"></div>) : 
@@ -56,7 +55,6 @@ export default function TaskSpace(props) {
               card.isUrgent ? 'Urgent' : 
               card.isImportant ? 'Important' : 'Normal'}
             </p>
-            <p>Deadline: {card.deadLineDate} {card.deadLineTime}</p>
             <div className="w-full h-fit flex flex-row gap-2 justify-end">
              <button className="focus:outline-none" onClick={() => props.deleteCard(index*3 + 1)}><MdOutlineDelete /></button>
             </div>
@@ -79,7 +77,6 @@ export default function TaskSpace(props) {
               card.isUrgent ? 'Urgent' : 
               card.isImportant ? 'Important' : 'Normal'}
             </p>
-            <p>Deadline: {card.deadLineDate} {card.deadLineTime}</p>
             <div className="w-full h-fit flex flex-row gap-2 justify-end">
              <button className="focus:outline-none" onClick={() => props.deleteCard(index*3 + 2)}><MdOutlineDelete /></button>
             </div>
