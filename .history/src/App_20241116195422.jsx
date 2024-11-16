@@ -13,11 +13,10 @@ import AddTodo from './components/AddTodo';
 import LinkModal from './components/LinkModal';
 import { IoLink } from "react-icons/io5";
 import { TbUrgent } from "react-icons/tb";
-import { FaRegBell } from "react-icons/fa";
+import { IoIosStarOutline } from "react-icons/io";
 import { IoIosTimer } from "react-icons/io";
 import DeadLineModal from './components/DeadLineModal';
 import * as chrono from 'chrono-node';
-import { set } from 'mongoose';
 
 function App() {
   const [darkMode, setDarkMode] = useState(false)
@@ -32,19 +31,6 @@ function App() {
   const [deadLineText, setDeadLineText] = useState('');
   const [deadLineDate, setDeadLineDate] = useState('');
   const [deadLineTime, setDeadLineTime] = useState('');
-  const [priority, setPriority] = useState('');
-
-  const setTaskPriority = (isUrgent, isImportant) => {
-    if (isUrgent && isImportant) {
-      setPriority('P1'); // Urgent and Important -> Highest Priority
-    } else if (!isUrgent && isImportant) {
-      setPriority('P2'); // Not Urgent but Important -> Medium Priority
-    } else if (isUrgent && !isImportant) {
-      setPriority('P3'); // Urgent but Not Important -> Low Priority
-    } else {
-      setPriority('P4'); // Not Urgent and Not Important -> Very Low Priority
-    }
-  };
 
   const extractDateTime = (inputText) => {
     const result = chrono.parse(inputText)
@@ -58,15 +44,9 @@ function App() {
     hideDeadLineModal()
   }
 
-  const toggleUrgent = () => {
-    setIsUrgent(!isUrgent);
-    setTaskPriority(!isUrgent, isImportant);
-  }
+  const toggleUrgent = () => setIsUrgent(!isUrgent);
+  const toggleImportant = () => setIsImportant(!isImportant);
 
-  const toggleImportant = () => {
-    setIsImportant(!isImportant);
-    setTaskPriority(isUrgent, !isImportant);
-  }
 
   const [cards, setCards] = useState([])
 
@@ -100,7 +80,6 @@ function App() {
     // Reset the priority states after adding the card
     setIsUrgent(false);
     setIsImportant(false);
-    setPriority('');
     hideModal();
   }
 
@@ -159,11 +138,11 @@ function App() {
                           onClick={handleSubmit}>Add</button>}
                  urgentButton={<button className={`rounded-lg rounded-br-[0px] border-none focus:outline-none col-start-9 col-span-1 row-start-12 row-end-13 p-2 
                   ${isUrgent ? 'bg-red-500' : 'bg-white'}`} onClick={toggleUrgent}>
-                          <TbUrgent className="text-black" size={25} />
+                          <BsExclamationTriangle className="text-black" size={25} />
                           </button>}
                  importantButton={<button className={`rounded-lg rounded-br-[0px] border-none focus:outline-none col-start-10 col-span-1 row-start-12 row-end-13 p-2 
-                  ${isImportant ? 'bg-yellow-400' : 'bg-white'}`} onClick={toggleImportant}>
-                 <FaRegBell className="text-black" size={25} />
+                  ${isImportant ? 'bg-blue-500' : 'bg-white'}`} onClick={toggleImportant}>
+                 <IoIosStarOutline className="text-black" size={25} />
              </button>}
              taskDeadLineButton={<button className="col-start-8 col-span-1 row-start-12 row-end-13 bg-white p-2 rounded-lg rounded-br-[0px]" onClick={() => setShowDeadLineModal(true)}>
              <IoIosTimer className="text-black" size={25} />
@@ -173,7 +152,6 @@ function App() {
       </button>}
       time={deadLineTime} date={deadLineDate}
       removeText={deadLineRemove}
-      priority={priority}
                           />
       </Modal>
 

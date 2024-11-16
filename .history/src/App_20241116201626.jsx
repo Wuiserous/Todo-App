@@ -17,7 +17,6 @@ import { FaRegBell } from "react-icons/fa";
 import { IoIosTimer } from "react-icons/io";
 import DeadLineModal from './components/DeadLineModal';
 import * as chrono from 'chrono-node';
-import { set } from 'mongoose';
 
 function App() {
   const [darkMode, setDarkMode] = useState(false)
@@ -32,7 +31,7 @@ function App() {
   const [deadLineText, setDeadLineText] = useState('');
   const [deadLineDate, setDeadLineDate] = useState('');
   const [deadLineTime, setDeadLineTime] = useState('');
-  const [priority, setPriority] = useState('');
+  const [priority, setPriority] = useState('P3');
 
   const setTaskPriority = (isUrgent, isImportant) => {
     if (isUrgent && isImportant) {
@@ -60,13 +59,12 @@ function App() {
 
   const toggleUrgent = () => {
     setIsUrgent(!isUrgent);
-    setTaskPriority(!isUrgent, isImportant);
+    setTaskPriority(isUrgent, isImportant);
   }
 
   const toggleImportant = () => {
     setIsImportant(!isImportant);
-    setTaskPriority(isUrgent, !isImportant);
-  }
+
 
   const [cards, setCards] = useState([])
 
@@ -100,7 +98,6 @@ function App() {
     // Reset the priority states after adding the card
     setIsUrgent(false);
     setIsImportant(false);
-    setPriority('');
     hideModal();
   }
 
@@ -173,7 +170,6 @@ function App() {
       </button>}
       time={deadLineTime} date={deadLineDate}
       removeText={deadLineRemove}
-      priority={priority}
                           />
       </Modal>
 

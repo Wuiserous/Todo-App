@@ -65,7 +65,7 @@ function App() {
 
   const toggleImportant = () => {
     setIsImportant(!isImportant);
-    setTaskPriority(isUrgent, !isImportant);
+    setTaskPriority(isUrgent, isImportant);
   }
 
   const [cards, setCards] = useState([])
@@ -100,7 +100,6 @@ function App() {
     // Reset the priority states after adding the card
     setIsUrgent(false);
     setIsImportant(false);
-    setPriority('');
     hideModal();
   }
 

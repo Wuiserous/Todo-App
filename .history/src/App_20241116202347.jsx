@@ -32,7 +32,7 @@ function App() {
   const [deadLineText, setDeadLineText] = useState('');
   const [deadLineDate, setDeadLineDate] = useState('');
   const [deadLineTime, setDeadLineTime] = useState('');
-  const [priority, setPriority] = useState('');
+  const [priority, setPriority] = useState('Set Priority');
 
   const setTaskPriority = (isUrgent, isImportant) => {
     if (isUrgent && isImportant) {
@@ -100,7 +100,6 @@ function App() {
     // Reset the priority states after adding the card
     setIsUrgent(false);
     setIsImportant(false);
-    setPriority('');
     hideModal();
   }
 

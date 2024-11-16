@@ -17,7 +17,6 @@ import { FaRegBell } from "react-icons/fa";
 import { IoIosTimer } from "react-icons/io";
 import DeadLineModal from './components/DeadLineModal';
 import * as chrono from 'chrono-node';
-import { set } from 'mongoose';
 
 function App() {
   const [darkMode, setDarkMode] = useState(false)
@@ -32,19 +31,7 @@ function App() {
   const [deadLineText, setDeadLineText] = useState('');
   const [deadLineDate, setDeadLineDate] = useState('');
   const [deadLineTime, setDeadLineTime] = useState('');
-  const [priority, setPriority] = useState('');
-
-  const setTaskPriority = (isUrgent, isImportant) => {
-    if (isUrgent && isImportant) {
-      setPriority('P1'); // Urgent and Important -> Highest Priority
-    } else if (!isUrgent && isImportant) {
-      setPriority('P2'); // Not Urgent but Important -> Medium Priority
-    } else if (isUrgent && !isImportant) {
-      setPriority('P3'); // Urgent but Not Important -> Low Priority
-    } else {
-      setPriority('P4'); // Not Urgent and Not Important -> Very Low Priority
-    }
-  };
+  const [priority, setPriority] = useState('Normal');
 
   const extractDateTime = (inputText) => {
     const result = chrono.parse(inputText)
@@ -58,15 +45,9 @@ function App() {
     hideDeadLineModal()
   }
 
-  const toggleUrgent = () => {
-    setIsUrgent(!isUrgent);
-    setTaskPriority(!isUrgent, isImportant);
-  }
+  const toggleUrgent = () => setIsUrgent(!isUrgent);
+  const toggleImportant = () => setIsImportant(!isImportant);
 
-  const toggleImportant = () => {
-    setIsImportant(!isImportant);
-    setTaskPriority(isUrgent, !isImportant);
-  }
 
   const [cards, setCards] = useState([])
 
@@ -100,7 +81,6 @@ function App() {
     // Reset the priority states after adding the card
     setIsUrgent(false);
     setIsImportant(false);
-    setPriority('');
     hideModal();
   }
 
@@ -173,7 +153,6 @@ function App() {
       </button>}
       time={deadLineTime} date={deadLineDate}
       removeText={deadLineRemove}
-      priority={priority}
                           />
       </Modal>
 

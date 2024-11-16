@@ -42,7 +42,7 @@ export default function AddTodo(props) {
                 <div className="grid auto-rows-auto gap-2 grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr]">
                     <div className="row-span-1 col-span-10 border flex flex-row justify-center items-center rounded-lg rounded-br-[0px] bg-[#ffffff] pr-1 gap-1">
                         {props.titleInput}
-                        {props.priority && (
+                        {day && time && (
                             <div className="bg-blue-500 w-fit h-fit p-1 rounded-lg rounded-br-[0px]">{props.priority}</div>
                         )}
                         {day && time && (
