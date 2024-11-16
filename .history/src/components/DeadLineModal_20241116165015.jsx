@@ -21,9 +21,11 @@ export default function DeadLineModal(props) {
 
     useEffect(() => {
         if (props.Show) {
+            setIsClosing(false); // Reset closing animation
             setIsVisible(true);
         } else {
-            setIsVisible(false); // Delay hiding after animation
+            setIsClosing(true); // Trigger closing animation
+            setTimeout(() => setIsVisible(false), 500); // Delay hiding after animation
         }
     }, [props.Show]);
 

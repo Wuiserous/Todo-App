@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react"
 
 export default function DeadLineModal(props) {
-    const [isVisible, setIsVisible] = useState();
+    const [isVisible, setIsVisible] = useState()
+    const [isClosing, setIsClosing] = useState(false);
 
     const dateString = props.date;
     const timeString = props.time;
@@ -21,9 +22,11 @@ export default function DeadLineModal(props) {
 
     useEffect(() => {
         if (props.Show) {
+            // Trigger animation when modal is shown
             setIsVisible(true);
         } else {
-            setIsVisible(false); // Delay hiding after animation
+            // Reset visibility state when modal is hidden
+            setIsVisible(false);
         }
     }, [props.Show]);
 

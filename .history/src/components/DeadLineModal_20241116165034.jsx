@@ -23,7 +23,7 @@ export default function DeadLineModal(props) {
         if (props.Show) {
             setIsVisible(true);
         } else {
-            setIsVisible(false); // Delay hiding after animation
+            setIsVisible(false), 500); // Delay hiding after animation
         }
     }, [props.Show]);
 
