@@ -89,7 +89,7 @@ function App() {
       isImportant,
       deadLineDate,
       deadLineTime,
-      priority
+      prio
     };
     setTitle('');
     setDescription('');

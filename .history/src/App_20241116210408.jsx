@@ -88,8 +88,7 @@ function App() {
       isUrgent,
       isImportant,
       deadLineDate,
-      deadLineTime,
-      priority
+      deadLineTime
     };
     setTitle('');
     setDescription('');

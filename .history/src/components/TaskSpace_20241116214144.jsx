@@ -106,7 +106,7 @@ export default function TaskSpace(props) {
             </p>
             <p>Deadline: {card.deadLineDate} {card.deadLineTime}</p>
             <div className="w-full h-fit flex flex-row gap-2 justify-end">
-             <button className="focus:outline-none opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" onClick={() => props.deleteCard(index*3 + 2)}><MdOutlineDelete /></button>
+             <button className="focus:outline-none" onClick={() => props.deleteCard(index*3 + 2)}><MdOutlineDelete /></button>
             </div>
             {card.isUrgent && card.isImportant ? (
                 <div className="w-10 h-5 absolute z-10 bg-[#D32F2F] bottom-[-21px] rounded-bl-lg rounded-br-xl right-[-1px] text-center text-[12px]">

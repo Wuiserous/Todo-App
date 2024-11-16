@@ -88,8 +88,7 @@ function App() {
       isUrgent,
       isImportant,
       deadLineDate,
-      deadLineTime,
-      priority
+      deadLineTime
     };
     setTitle('');
     setDescription('');
@@ -142,7 +141,7 @@ function App() {
               </button>} 
               bgColor={darkMode ? 'bg-slate-300' : 'bg-[#121212]'} />
       
-      <TaskSpace deleteCard={deleteCard} cards={cards} bgColor={darkMode ? 'bg-slate-300' : 'bg-[#121212]'} hoveredCardIndex={hoveredCardIndex} />
+      <TaskSpace deleteCard={deleteCard} cards={cards} bgColor={darkMode ? 'bg-slate-300' : 'bg-[#121212]'} hoveredCardIndex={hoveredCardIndex} priority/>
       <ProgressSpace bgColor={darkMode ? 'bg-slate-300' : 'bg-[#121212]'} />
       <MotivationSpace bgColor={darkMode ? 'bg-slate-300' : 'bg-[#121212]'} />
 
