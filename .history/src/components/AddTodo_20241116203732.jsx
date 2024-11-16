@@ -11,7 +11,7 @@ export default function AddTodo(props) {
           bgColor = 'bg-red-500'; // Urgent and Important -> High priority (Red)
           break;
         case 'P2':
-          bgColor = 'bg-yellow-400'; // Important but not urgent -> Medium priority (Yellow)
+          bgColor = 'bg-yellow-500'; // Important but not urgent -> Medium priority (Yellow)
           break;
         case 'P3':
           bgColor = 'bg-blue-500'; // Urgent but not important -> Low priority (Blue)
@@ -62,7 +62,7 @@ export default function AddTodo(props) {
                     <div className="row-span-1 col-span-10 border flex flex-row justify-center items-center rounded-lg rounded-br-[0px] bg-[#ffffff] pr-1 gap-1">
                         {props.titleInput}
                         {props.priority && (
-                            <div className={`${bgColor} w-fit h-fit p-1 rounded-lg rounded-br-[0px]`}>{props.priority}</div>
+                            <div className="bg-blue-500 w-fit h-fit p-1 rounded-lg rounded-br-[0px]">{props.priority}</div>
                         )}
                         {day && time && (
                             <button

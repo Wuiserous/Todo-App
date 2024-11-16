@@ -11,7 +11,7 @@ export default function AddTodo(props) {
           bgColor = 'bg-red-500'; // Urgent and Important -> High priority (Red)
           break;
         case 'P2':
-          bgColor = 'bg-yellow-400'; // Important but not urgent -> Medium priority (Yellow)
+          bgColor = 'bg-yellow-500'; // Important but not urgent -> Medium priority (Yellow)
           break;
         case 'P3':
           bgColor = 'bg-blue-500'; // Urgent but not important -> Low priority (Blue)
