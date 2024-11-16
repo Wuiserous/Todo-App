@@ -74,7 +74,7 @@ function App() {
     // Reset the priority states after adding the card
     setIsUrgent(false);
     setIsImportant(false);
-    hideModal();
+    
   }
 
   const deleteCard = (indexToDelete) => {

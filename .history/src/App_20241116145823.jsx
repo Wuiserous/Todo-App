@@ -129,7 +129,7 @@ function App() {
                           onChange={(e) => setDescription(e.target.value)}
                           className="rounded-lg rounded-br-[0px] text-black resize-none overflow-auto border border-gray-500 p-2 focus:outline-none bg-[#ffffff] col-start-1 col-span-10 row-start-2 row-span-10"></textarea>}
                  submitButton={<button className="col-start-1 col-span-7 row-start-12 row-end-13 hover:bg-blue-700 bg-blue-500 p-2 rounded-lg rounded-br-[0px]" 
-                          onClick={handleSubmit}>Add</button>}
+                          onClick={handleSubmit} id="wrapper">Add</button>}
                  urgentButton={<button className={`rounded-lg rounded-br-[0px] border-none focus:outline-none col-start-9 col-span-1 row-start-12 row-end-13 p-2 
                   ${isUrgent ? 'bg-red-500' : 'bg-white'}`} onClick={toggleUrgent}>
                           <BsExclamationTriangle className="text-black" size={25} />
