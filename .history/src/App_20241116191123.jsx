@@ -50,10 +50,9 @@ function App() {
 
   const [cards, setCards] = useState([])
 
-  const deadLineRemove = () => {
+  const handle deadLineRemove = () => {
     setDeadLineText('')
-    setDeadLineDate('')
-    setDeadLineTime('')
+    
   }
 
   const addCard = (card) => {
@@ -151,7 +150,6 @@ function App() {
           <IoIosTimer className="text-black" size={25} />
       </button>}
       time={deadLineTime} date={deadLineDate}
-      removeText={deadLineRemove}
                           />
       </Modal>
 
