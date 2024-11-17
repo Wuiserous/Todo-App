@@ -48,7 +48,6 @@ function App() {
 
   const extractDateTime = (inputText) => {
     const result = chrono.parse(inputText)
-    console.log(result)
 
     if (result.length > 0) {
       const parseDate = result[0].start.date();
@@ -82,7 +81,7 @@ function App() {
   }
 
   function handleSubmit(e) {
-    const createdAt = new Date().toISOString();
+    const created
     e.preventDefault();
     const newCard = {
       title,
@@ -91,8 +90,7 @@ function App() {
       isImportant,
       deadLineDate,
       deadLineTime,
-      priority,
-      createdAt
+      priority
     };
     setTitle('');
     setDescription('');

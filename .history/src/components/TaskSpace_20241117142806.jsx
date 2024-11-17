@@ -2,7 +2,6 @@ import { useState } from "react";
 import { MdOutlineDelete } from "react-icons/md";
 import { BiLogoBaidu } from "react-icons/bi";
 import ProgressBar from './ProgressBar';
-
 export default function TaskSpace(props) {
   // Assuming `props.cards` is the array of card data from the DB
   const cards = props.cards
@@ -52,7 +51,7 @@ export default function TaskSpace(props) {
                   <span className="hidden group-hover:block">{card.priority ? card.priority : 'P4'}</span>
                 </div>
             ) : null }
-            <div className="absolute bottom-[-60px]"><ProgressBar createdTime={card.createdAt} deadlineDate={card.deadLineDate} deadlineTime={card.deadLineTime} /></div>
+
           </div>
         ))}
       </div>
@@ -82,7 +81,6 @@ export default function TaskSpace(props) {
                   <span className="hidden group-hover:block">{card.priority ? card.priority : 'P4'}</span>
                 </div>
             ) : null }
-            <div className="absolute bottom-[-60px]"><ProgressBar createdTime={card.createdAt} deadlineDate={card.deadLineDate} deadlineTime={card.deadLineTime} /></div>
           </div>
         ))}
       </div>
@@ -112,7 +110,6 @@ export default function TaskSpace(props) {
                   <span className="hidden group-hover:block">{card.priority ? card.priority : 'P4'}</span>
                 </div>
             ) : null }
-            <div className="absolute bottom-[-60px]"><ProgressBar createdTime={card.createdAt} deadlineDate={card.deadLineDate} deadlineTime={card.deadLineTime} /></div>
           </div>
         ))}
       </div>

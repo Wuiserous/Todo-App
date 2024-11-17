@@ -52,7 +52,7 @@ export default function TaskSpace(props) {
                   <span className="hidden group-hover:block">{card.priority ? card.priority : 'P4'}</span>
                 </div>
             ) : null }
-            <div className="absolute bottom-[-60px]"><ProgressBar createdTime={card.createdAt} deadlineDate={card.deadLineDate} deadlineTime={card.deadLineTime} /></div>
+            <div className="absolute bottom-0"><ProgressBar createdTime={card.createdAt} deadlineDate={card.deadLineDate} deadlineTime={card.deadLineTime} /></div>
           </div>
         ))}
       </div>
@@ -82,7 +82,6 @@ export default function TaskSpace(props) {
                   <span className="hidden group-hover:block">{card.priority ? card.priority : 'P4'}</span>
                 </div>
             ) : null }
-            <div className="absolute bottom-[-60px]"><ProgressBar createdTime={card.createdAt} deadlineDate={card.deadLineDate} deadlineTime={card.deadLineTime} /></div>
           </div>
         ))}
       </div>
@@ -112,7 +111,6 @@ export default function TaskSpace(props) {
                   <span className="hidden group-hover:block">{card.priority ? card.priority : 'P4'}</span>
                 </div>
             ) : null }
-            <div className="absolute bottom-[-60px]"><ProgressBar createdTime={card.createdAt} deadlineDate={card.deadLineDate} deadlineTime={card.deadLineTime} /></div>
           </div>
         ))}
       </div>

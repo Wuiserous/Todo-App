@@ -48,10 +48,10 @@ function App() {
 
   const extractDateTime = (inputText) => {
     const result = chrono.parse(inputText)
-    console.log(result)
 
     if (result.length > 0) {
       const parseDate = result[0].start.date();
+      console
       setDeadLineDate(parseDate.toLocaleDateString());
       setDeadLineTime(parseDate.toLocaleTimeString());
     }
@@ -106,6 +106,9 @@ function App() {
     setIsImportant(false);
     setPriority('');
     hideModal();
+    console.log(deadLineDate)
+            console.log(deadLineTime)
+            console.log(createdAt)
   }
 
   const deleteCard = (indexToDelete) => {

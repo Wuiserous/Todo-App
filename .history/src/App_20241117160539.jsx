@@ -48,10 +48,11 @@ function App() {
 
   const extractDateTime = (inputText) => {
     const result = chrono.parse(inputText)
-    console.log(result)
 
     if (result.length > 0) {
       const parseDate = result[0].start.date();
+      console.log(`here we got the deadline ${parseDate}`)
+      setDeadLine(parseDate);
       setDeadLineDate(parseDate.toLocaleDateString());
       setDeadLineTime(parseDate.toLocaleTimeString());
     }

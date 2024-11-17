@@ -32,6 +32,7 @@ function App() {
   const [deadLineText, setDeadLineText] = useState('');
   const [deadLineDate, setDeadLineDate] = useState('');
   const [deadLineTime, setDeadLineTime] = useState('');
+  const [deadLine, setDeadLine] = useState('');
   const [priority, setPriority] = useState('');
 
   const setTaskPriority = (isUrgent, isImportant) => {
@@ -48,10 +49,11 @@ function App() {
 
   const extractDateTime = (inputText) => {
     const result = chrono.parse(inputText)
-    console.log(result)
 
     if (result.length > 0) {
       const parseDate = result[0].start.date();
+      console.log(`here we got the deadline ${parseDate}`)
+      setDeadLine(parseDate);
       setDeadLineDate(parseDate.toLocaleDateString());
       setDeadLineTime(parseDate.toLocaleTimeString());
     }
@@ -106,6 +108,7 @@ function App() {
     setIsImportant(false);
     setPriority('');
     hideModal();
+
   }
 
   const deleteCard = (indexToDelete) => {

@@ -35,6 +35,7 @@ export default function TaskSpace(props) {
             <div className="w-full h-fit flex flex-row gap-2 justify-end">
              <button className="focus:outline-none opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" onClick={() => props.deleteCard(index*3 + 0)}><MdOutlineDelete /></button>
             </div>
+            
             {card.isUrgent && card.isImportant ? (
                 <div className="w-10 h-5 absolute z-10 bg-[#D32F2F] bottom-[-21px] rounded-bl-lg rounded-br-xl right-[-1px] text-center text-[12px]">
                   <span className="hidden group-hover:block">{card.priority}</span>
@@ -52,7 +53,7 @@ export default function TaskSpace(props) {
                   <span className="hidden group-hover:block">{card.priority ? card.priority : 'P4'}</span>
                 </div>
             ) : null }
-            <div className="absolute bottom-[-60px]"><ProgressBar createdTime={card.createdAt} deadlineDate={card.deadLineDate} deadlineTime={card.deadLineTime} /></div>
+
           </div>
         ))}
       </div>
@@ -82,7 +83,6 @@ export default function TaskSpace(props) {
                   <span className="hidden group-hover:block">{card.priority ? card.priority : 'P4'}</span>
                 </div>
             ) : null }
-            <div className="absolute bottom-[-60px]"><ProgressBar createdTime={card.createdAt} deadlineDate={card.deadLineDate} deadlineTime={card.deadLineTime} /></div>
           </div>
         ))}
       </div>
@@ -112,7 +112,6 @@ export default function TaskSpace(props) {
                   <span className="hidden group-hover:block">{card.priority ? card.priority : 'P4'}</span>
                 </div>
             ) : null }
-            <div className="absolute bottom-[-60px]"><ProgressBar createdTime={card.createdAt} deadlineDate={card.deadLineDate} deadlineTime={card.deadLineTime} /></div>
           </div>
         ))}
       </div>
