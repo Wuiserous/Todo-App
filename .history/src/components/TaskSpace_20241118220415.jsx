@@ -6,8 +6,10 @@ import ProgressBar from './ProgressBar';
 export default function TaskSpace(props) {
   // Assuming `props.cards` is the array of card data from the DB
   const cards = props.cards
-  console.log(cards)
- 
+  
+  forEach(cards, (card, index) => {
+    if (card.priority == "")
+  }
 
   // Function to organize cards into 3 columns
   const columns = [[], [], []];

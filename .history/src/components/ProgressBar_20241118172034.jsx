@@ -3,10 +3,8 @@ import React, { useState, useEffect } from "react";
 export default function ProgressBar(props) {
   const [progress, setProgress] = useState(0);
   const [isRed, setIsRed] = useState(false); // State to control the red transition
-  const [timeLeft, setTimeLeft] = useState(""); // State to store the time left
 
   const color = props.color;
-
   useEffect(() => {
     const interval = setInterval(() => {
       const currentTime = new Date();
@@ -31,25 +29,6 @@ export default function ProgressBar(props) {
       } else if (newProgress === 100 && isRed) {
         setIsRed(false); // After hitting 100%, turn blue
       }
-
-      // Calculate time left
-      const remainingTime = deadline.getTime() - currentTime.getTime();
-
-      if (remainingTime <= 0) {
-        setTimeLeft("0 minutes"); // No time left
-      } else {
-        const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
-
-        if (days > 0) {
-          setTimeLeft(`${days} day${days > 1 ? "s" : ""} left`);
-        } else if (hours > 0) {
-          setTimeLeft(`${hours} hour${hours > 1 ? "s" : ""} left`);
-        } else {
-          setTimeLeft(`${minutes} minute${minutes > 1 ? "s" : ""} left`);
-        }
-      }
     }, 1000); // Update every second
 
     return () => clearInterval(interval); // Cleanup on component unmount
@@ -65,10 +44,7 @@ export default function ProgressBar(props) {
   };
 
   return (
-    <div style={{ width: "314px", position: "relative", display: "flex", flexDirection: "column" }}>
-      <p style={{ fontSize: "10px", position: "absolute", right: "0px", top: "-13px" }}>
-        {progress.toFixed(0)}% - {timeLeft}
-      </p>
+    <div style={{ width: "314px", position: "relative", border: "1px solid white" margin: "20px 0" }}>
       <div
         style={{
           height: "5px",
@@ -77,6 +53,9 @@ export default function ProgressBar(props) {
           transition: "width 0.5s, background-color 0.5s",
         }}
       ></div>
+      <p style={{ marginTop: "10px", position: "absolute", top: "0px", left: "0px", textAlign: "center" }}>
+        {progress.toFixed(2)}% Time Passed
+      </p>
     </div>
   );
 }
