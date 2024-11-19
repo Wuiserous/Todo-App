@@ -68,7 +68,7 @@ export default function TaskSpace(props) {
             <p className="text-[#E0E0E0]">{card.description}</p>
             <p>{card.secondsLeft} seconds left</p>
             <div className="w-full h-fit flex flex-row gap-2 justify-end">
-             <button className="focus:outline-none opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" onClick={() => props.deleteCard(card.createdAt)}><MdOutlineDelete /></button>
+             <button className="focus:outline-none opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" onClick={() => props.deleteCard(index*3 + 0)}><MdOutlineDelete /></button>
             </div>
             {card.isUrgent && card.isImportant ? (
               <div className="w-10 h-[5px] absolute z-10 bg-[#ff0000] bottom-[0px] left-[0.1px] text-center text-[12px]">
@@ -107,7 +107,7 @@ export default function TaskSpace(props) {
           <p className="text-[#E0E0E0]">{card.description}</p>
           <p>{card.secondsLeft} seconds left</p>
           <div className="w-full h-fit flex flex-row gap-2 justify-end">
-           <button className="focus:outline-none opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" onClick={() => props.deleteCard(card.createdAt)}><MdOutlineDelete /></button>
+           <button className="focus:outline-none opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" onClick={() => props.deleteCard(index*3 + 0)}><MdOutlineDelete /></button>
           </div>
           {card.isUrgent && card.isImportant ? (
               <div className="w-10 h-[5px] absolute z-10 bg-[#ff0000] bottom-[0px] left-[0.1px] text-center text-[12px]">
@@ -146,7 +146,7 @@ export default function TaskSpace(props) {
           <p className="text-[#E0E0E0]">{card.description}</p>
           <p>{card.secondsLeft} seconds left</p>
           <div className="w-full h-fit flex flex-row gap-2 justify-end">
-           <button className="focus:outline-none opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" onClick={() => props.deleteCard(card.createdAt)}><MdOutlineDelete /></button>
+           <button className="focus:outline-none opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" onClick={() => props.deleteCard(index*3 + 0)}><MdOutlineDelete /></button>
           </div>
           {card.isUrgent && card.isImportant ? (
             <div className="w-10 h-[5px] absolute z-10 bg-[#D32F2F] bottom-[0px] left-[0.1px] text-center text-[12px]">

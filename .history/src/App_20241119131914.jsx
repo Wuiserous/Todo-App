@@ -81,7 +81,7 @@ function App() {
     setCards([...cards, card])
   }
 
-  function handleSubmit(e) {
+ function handleSubmit(e) {
     e.preventDefault();
   
     const createdAt = new Date().toISOString(); // Current time in ISO format
@@ -110,18 +110,38 @@ function App() {
     setDeadLineText('');
     setDeadLineDate('');
     setDeadLineTime('');
-    addCard(newCard);
   
+    // Add the new card to the current cards and sort them
+    const updatedCards = [...cards, newCard];
+
+    // Define the priority order (descending order: P1 > P2 > P3 > P4)
+    const priorityOrder = { P1: 1, P2: 2, P3: 3, P4: 4 };
+    
+    // Sort cards by priority (descending) and deadline (ascending)
+    const sortedCards = updatedCards.sort((a, b) => {
+        // First, compare priority (descending order)
+        const priorityComparison = priorityOrder[b.priority] - priorityOrder[a.priority];
+        if (priorityComparison !== 0) {
+            return priorityComparison; // If priorities differ, sort by priority
+        }
+        // If priorities are the same, compare deadline in ascending order
+        return a.secondsLeft - b.secondsLeft;
+    });
+    
+    // Now update the state with the sorted cards
+    addCard(sortedCards);
+
     // Reset the priority states after adding the card
     setIsUrgent(false);
     setIsImportant(false);
     setPriority('');
     hideModal();
-  }
+}
+
   
 
-  const deleteCard = (createdAtToDelete) => {
-    setCards(cards.filter(card => card.createdAt !== createdAtToDelete));
+  const deleteCard = (indexToDelete) => {
+    setCards(cards.filter((_, index) => index !== indexToDelete));
     console.log("tried deleting it")
   }
 

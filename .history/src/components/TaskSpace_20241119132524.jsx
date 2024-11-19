@@ -7,45 +7,15 @@ export default function TaskSpace(props) {
   // Assuming `props.cards` is the array of card data from the DB
   const cards = props.cards
 
-  const Priority1 = []
-  const Priority2 = []
-  const Priority3 = []
-  const Priority4 = []
-
-  cards.forEach((card) => {
-    if (card.priority === 'P1') {
-      Priority1.push(card)
-    }
-    else if (card.priority === 'P2') {
-      Priority2.push(card)
-    }
-    else if (card.priority === 'P3') {
-      Priority3.push(card)
-    }
-    else {
-      Priority4.push(card)
-    }
+  forEach(cards, (card, index) => {
+    if (card.deadLines)
   })
-
-  const sortedPriority1 = Priority1.sort((a, b) => a.secondsLeft - b.secondsLeft)
-  const sortedPriority2 = Priority2.sort((a, b) => a.secondsLeft - b.secondsLeft)
-  const sortedPriority3 = Priority3.sort((a, b) => a.secondsLeft - b.secondsLeft)
-  const sortedPriority4 = Priority4.sort((a, b) => a.secondsLeft - b.secondsLeft)
-
-  const combinedArray = sortedPriority1
-  .concat(sortedPriority2, sortedPriority3, sortedPriority4);
-
-  
-
-
-
-
 
   // Function to organize cards into 3 columns
   const columns = [[], [], []];
 
   // Distribute cards into the three columns
-  combinedArray.forEach((card, index) => {
+  cards.forEach((card, index) => {
     columns[index % 3].push(card);
   });
 
@@ -68,7 +38,7 @@ export default function TaskSpace(props) {
             <p className="text-[#E0E0E0]">{card.description}</p>
             <p>{card.secondsLeft} seconds left</p>
             <div className="w-full h-fit flex flex-row gap-2 justify-end">
-             <button className="focus:outline-none opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" onClick={() => props.deleteCard(card.createdAt)}><MdOutlineDelete /></button>
+             <button className="focus:outline-none opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" onClick={() => props.deleteCard(index*3 + 0)}><MdOutlineDelete /></button>
             </div>
             {card.isUrgent && card.isImportant ? (
               <div className="w-10 h-[5px] absolute z-10 bg-[#ff0000] bottom-[0px] left-[0.1px] text-center text-[12px]">
@@ -105,9 +75,8 @@ export default function TaskSpace(props) {
           {index*3 + 1 === props.hoveredCardIndex ? (<div className='w-full h-full inset-0 absolute border rounded-[5px] shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]'></div>) : (null)} 
           <h3 className="text-[#A0A0A0]">{card.title}</h3>
           <p className="text-[#E0E0E0]">{card.description}</p>
-          <p>{card.secondsLeft} seconds left</p>
           <div className="w-full h-fit flex flex-row gap-2 justify-end">
-           <button className="focus:outline-none opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" onClick={() => props.deleteCard(card.createdAt)}><MdOutlineDelete /></button>
+           <button className="focus:outline-none opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" onClick={() => props.deleteCard(index*3 + 0)}><MdOutlineDelete /></button>
           </div>
           {card.isUrgent && card.isImportant ? (
               <div className="w-10 h-[5px] absolute z-10 bg-[#ff0000] bottom-[0px] left-[0.1px] text-center text-[12px]">
@@ -144,24 +113,23 @@ export default function TaskSpace(props) {
           {index*3 + 2 === props.hoveredCardIndex ? (<div className='w-full h-full inset-0 absolute border rounded-[5px] shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]'></div>) : (null)} 
           <h3 className="text-[#A0A0A0]">{card.title}</h3>
           <p className="text-[#E0E0E0]">{card.description}</p>
-          <p>{card.secondsLeft} seconds left</p>
           <div className="w-full h-fit flex flex-row gap-2 justify-end">
-           <button className="focus:outline-none opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" onClick={() => props.deleteCard(card.createdAt)}><MdOutlineDelete /></button>
+           <button className="focus:outline-none opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" onClick={() => props.deleteCard(index*3 + 0)}><MdOutlineDelete /></button>
           </div>
           {card.isUrgent && card.isImportant ? (
             <div className="w-10 h-[5px] absolute z-10 bg-[#D32F2F] bottom-[0px] left-[0.1px] text-center text-[12px]">
               <span className="hidden group-hover:block">{card.priority}</span>
             </div>
           ) : card.isUrgent ? (
-            <div className="w-10 h-[5px] absolute z-10 bg-[#0000ff] bottom-[0px] left-[0.1px] text-center text-[12px]">
+            <div className="w-10 h-[5px] absolute z-10 bg-blue-500 bottom-[0px] left-[0.1px] text-center text-[12px]">
               <span className="hidden group-hover:block">{card.priority}</span>
             </div>
           ) : card.isImportant ? (
-            <div className="w-10 h-[5px] absolute z-10 bg-[#ffff00] bottom-[0px] left-[0.1px] text-center text-[12px]">
+            <div className="w-10 h-[5px] absolute z-10 bg-yellow-400 bottom-[0px] left-[0.1px] text-center text-[12px]">
               <span className="hidden group-hover:block">{card.priority}</span>
             </div>
           ) : card.isUrgent === false && card.isImportant === false ? (
-            <div className="w-10 h-[5px] absolute z-10 bg-[#808080] bottom-[0px] left-[0.1px] text-center text-[12px]">
+            <div className="w-10 h-[5px] absolute z-10 bg-gray-300 bottom-[0px] left-[0.1px] text-center text-[12px]">
               <span className="hidden group-hover:block">{card.priority ? card.priority : 'P4'}</span>
             </div>
         ) : null }

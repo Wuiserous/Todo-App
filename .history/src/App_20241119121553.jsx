@@ -120,8 +120,8 @@ function App() {
   }
   
 
-  const deleteCard = (createdAtToDelete) => {
-    setCards(cards.filter(card => card.createdAt !== createdAtToDelete));
+  const deleteCard = (indexToDelete) => {
+    setCards(cards.filter((_, index) => index !== indexToDelete));
     console.log("tried deleting it")
   }
 

@@ -82,16 +82,9 @@ function App() {
   }
 
   function handleSubmit(e) {
+    const createdAt = new Date().toISOString();
+    const 
     e.preventDefault();
-  
-    const createdAt = new Date().toISOString(); // Current time in ISO format
-    const deadlineDateTime = new Date(`${deadLineDate} ${deadLineTime}`); // Combine date and time
-  
-    // Calculate seconds remaining
-    const createdAtDate = new Date(createdAt); 
-    const secondsLeft = Math.floor((deadlineDateTime - createdAtDate) / 1000); 
-  
-    // Create a new card with the calculated secondsLeft
     const newCard = {
       title,
       description,
@@ -100,11 +93,8 @@ function App() {
       deadLineDate,
       deadLineTime,
       priority,
-      createdAt,
-      secondsLeft // Add the calculated value to the card
+      createdAt
     };
-  
-    // Reset fields and update state
     setTitle('');
     setDescription('');
     setDeadLineText('');
@@ -118,10 +108,9 @@ function App() {
     setPriority('');
     hideModal();
   }
-  
 
-  const deleteCard = (createdAtToDelete) => {
-    setCards(cards.filter(card => card.createdAt !== createdAtToDelete));
+  const deleteCard = (indexToDelete) => {
+    setCards(cards.filter((_, index) => index !== indexToDelete));
     console.log("tried deleting it")
   }
 
