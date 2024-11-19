@@ -66,8 +66,8 @@ export default function ProgressBar(props) {
 
   return (
     <div style={{ width: "314px", position: "relative", display: "flex", flexDirection: "column" }}>
-      <p style={{ fontSize: "10px", color: "gray", opacity: "0.75", position: "absolute", right: "0px", top: "-13px" }}>
-        {progress.toFixed(0)}%
+      <p style={{ fontSize: "10px", position: "absolute", right: "0px", top: "-13px" }}>
+        {progress.toFixed(0)}% - {timeLeft}
       </p>
       <div
         style={{

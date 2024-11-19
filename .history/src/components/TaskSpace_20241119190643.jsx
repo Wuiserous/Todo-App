@@ -59,7 +59,7 @@ export default function TaskSpace(props) {
       <div className="h-full flex flex-col gap-2 col-span-1">
         {columns[0].map((card, index) => (
           <div className={`w-full relative h-fit border-[1px] border-[#333333] bg-[#1E1E1E] hover:shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]  flex flex-col gap-2 p-4 rounded-[5px] rounded-br-[0px] rounded-bl-[0px] card-animation transition-all duration-300 group`} key={index}>  
-            {index*3 === props.hoveredCardIndex ? (<div className='w-full h-full inset-0 absolute border rounded-[5px] rounded-br-[0px] rounded-bl-[0px] shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]'></div>) : (null)} 
+            {index*3 === props.hoveredCardIndex ? (<div className='w-full h-full inset-0 absolute border rounded-[5px] rounded-br-[0] shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]'></div>) : (null)} 
             <h3 className="text-[#A0A0A0]">{card.title}</h3>
             <p className="text-[#E0E0E0]">{card.description}</p>
             <div className="w-full h-fit flex flex-row gap-2 justify-end">
@@ -113,7 +113,7 @@ export default function TaskSpace(props) {
       <div className="h-full flex flex-col gap-2 col-span-1">
         {columns[1].map((card, index) => (
           <div className={`w-full relative h-fit border-[1px] border-[#333333] bg-[#1E1E1E] hover:shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]  flex flex-col gap-2 p-4 rounded-[5px] rounded-br-[0px] rounded-bl-[0px] card-animation transition-all duration-300 group`} key={index}>  
-          {index*3 + 1 === props.hoveredCardIndex ? (<div className='w-full h-full inset-0 absolute border rounded-[5px] rounded-br-[0px] rounded-bl-[0px] shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]'></div>) : (null)} 
+          {index*3 + 1 === props.hoveredCardIndex ? (<div className='w-full h-full inset-0 absolute border rounded-[5px] shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]'></div>) : (null)} 
           <h3 className="text-[#A0A0A0]">{card.title}</h3>
           <p className="text-[#E0E0E0]">{card.description}</p>
           <div className="w-full h-fit flex flex-row gap-2 justify-end">
@@ -167,7 +167,7 @@ export default function TaskSpace(props) {
       <div className="h-full flex flex-col gap-2 col-span-1">
         {columns[2].map((card, index) => (
           <div className={`w-full relative h-fit border-[1px] border-[#333333] bg-[#1E1E1E] hover:shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]  flex flex-col gap-2 p-4 rounded-[5px] rounded-br-[0px] rounded-bl-[0px] card-animation transition-all duration-300 group`} key={index}>  
-          {index*3 + 2 === props.hoveredCardIndex ? (<div className='w-full h-full inset-0 absolute border rounded-[5px] rounded-br-[0px] rounded-bl-[0px] shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]'></div>) : (null)} 
+          {index*3 + 2 === props.hoveredCardIndex ? (<div className='w-full h-full inset-0 absolute border rounded-[5px] shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]'></div>) : (null)} 
           <h3 className="text-[#A0A0A0]">{card.title}</h3>
           <p className="text-[#E0E0E0]">{card.description}</p>
           <div className="w-full h-fit flex flex-row gap-2 justify-end">

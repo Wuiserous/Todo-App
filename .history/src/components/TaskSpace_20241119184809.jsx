@@ -59,7 +59,7 @@ export default function TaskSpace(props) {
       <div className="h-full flex flex-col gap-2 col-span-1">
         {columns[0].map((card, index) => (
           <div className={`w-full relative h-fit border-[1px] border-[#333333] bg-[#1E1E1E] hover:shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]  flex flex-col gap-2 p-4 rounded-[5px] rounded-br-[0px] rounded-bl-[0px] card-animation transition-all duration-300 group`} key={index}>  
-            {index*3 === props.hoveredCardIndex ? (<div className='w-full h-full inset-0 absolute border rounded-[5px] rounded-br-[0px] rounded-bl-[0px] shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]'></div>) : (null)} 
+            {index*3 === props.hoveredCardIndex ? (<div className='w-full h-full inset-0 absolute border rounded-[5px] shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]'></div>) : (null)} 
             <h3 className="text-[#A0A0A0]">{card.title}</h3>
             <p className="text-[#E0E0E0]">{card.description}</p>
             <div className="w-full h-fit flex flex-row gap-2 justify-end">
@@ -113,20 +113,28 @@ export default function TaskSpace(props) {
       <div className="h-full flex flex-col gap-2 col-span-1">
         {columns[1].map((card, index) => (
           <div className={`w-full relative h-fit border-[1px] border-[#333333] bg-[#1E1E1E] hover:shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]  flex flex-col gap-2 p-4 rounded-[5px] rounded-br-[0px] rounded-bl-[0px] card-animation transition-all duration-300 group`} key={index}>  
-          {index*3 + 1 === props.hoveredCardIndex ? (<div className='w-full h-full inset-0 absolute border rounded-[5px] rounded-br-[0px] rounded-bl-[0px] shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]'></div>) : (null)} 
+          {index*3 + 1 === props.hoveredCardIndex ? (<div className='w-full h-full inset-0 absolute border rounded-[5px] shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]'></div>) : (null)} 
           <h3 className="text-[#A0A0A0]">{card.title}</h3>
           <p className="text-[#E0E0E0]">{card.description}</p>
           <div className="w-full h-fit flex flex-row gap-2 justify-end">
            <button className="focus:outline-none opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" onClick={() => props.deleteCard(card.createdAt)}><MdOutlineDelete /></button>
           </div>
           {card.isUrgent && card.isImportant ? (
-              <div className="w-10 h-[5px] absolute z-10 bg-[#ff0000] bottom-[0px] left-[0.1px] text-center text-[12px]"></div>
+              <div className="w-10 h-[5px] absolute z-10 bg-[#ff0000] bottom-[0px] left-[0.1px] text-center text-[12px]">
+                <span className="hidden group-hover:block">{card.priority}</span>
+              </div>
             ) : card.isUrgent ? (
-              <div className="w-10 h-[5px] absolute z-10 bg-[#0000ff] bottom-[0px] left-[0.1px] text-center text-[12px]"></div>
+              <div className="w-10 h-[5px] absolute z-10 bg-[#0000ff] bottom-[0px] left-[0.1px] text-center text-[12px]">
+                <span className="hidden group-hover:block">{card.priority}</span>
+              </div>
             ) : card.isImportant ? (
-              <div className="w-10 h-[5px] absolute z-10 bg-[#ffff00] bottom-[0px] left-[0.1px] text-center text-[12px]"></div>
+              <div className="w-10 h-[5px] absolute z-10 bg-[#ffff00] bottom-[0px] left-[0.1px] text-center text-[12px]">
+                <span className="hidden group-hover:block">{card.priority}</span>
+              </div>
             ) : card.isUrgent === false && card.isImportant === false ? (
-              <div className="w-10 h-[5px] absolute z-10 bg-[#808080] bottom-[0px] left-[0.1px] text-center text-[12px]"></div>
+              <div className="w-10 h-[5px] absolute z-10 bg-[#808080] bottom-[0px] left-[0.1px] text-center text-[12px]">
+                <span className="hidden group-hover:block">{card.priority ? card.priority : 'P4'}</span>
+              </div>
           ) : null }
             {card.secondsLeft ? (
               <div className="absolute bottom-[0px] right-[0px]">
@@ -167,16 +175,20 @@ export default function TaskSpace(props) {
       <div className="h-full flex flex-col gap-2 col-span-1">
         {columns[2].map((card, index) => (
           <div className={`w-full relative h-fit border-[1px] border-[#333333] bg-[#1E1E1E] hover:shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]  flex flex-col gap-2 p-4 rounded-[5px] rounded-br-[0px] rounded-bl-[0px] card-animation transition-all duration-300 group`} key={index}>  
-          {index*3 + 2 === props.hoveredCardIndex ? (<div className='w-full h-full inset-0 absolute border rounded-[5px] rounded-br-[0px] rounded-bl-[0px] shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]'></div>) : (null)} 
+          {index*3 + 2 === props.hoveredCardIndex ? (<div className='w-full h-full inset-0 absolute border rounded-[5px] shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]'></div>) : (null)} 
           <h3 className="text-[#A0A0A0]">{card.title}</h3>
           <p className="text-[#E0E0E0]">{card.description}</p>
           <div className="w-full h-fit flex flex-row gap-2 justify-end">
            <button className="focus:outline-none opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" onClick={() => props.deleteCard(card.createdAt)}><MdOutlineDelete /></button>
           </div>
           {card.isUrgent && card.isImportant ? (
-            <div className="w-10 h-[5px] absolute z-10 bg-[#D32F2F] bottom-[0px] left-[0.1px] text-center text-[12px]"></div>
+            <div className="w-10 h-[5px] absolute z-10 bg-[#D32F2F] bottom-[0px] left-[0.1px] text-center text-[12px]">
+              <span className="hidden group-hover:block">{card.priority}</span>
+            </div>
           ) : card.isUrgent ? (
-            <div className="w-10 h-[5px] absolute z-10 bg-[#0000ff] bottom-[0px] left-[0.1px] text-center text-[12px]"></div>
+            <div className="w-10 h-[5px] absolute z-10 bg-[#0000ff] bottom-[0px] left-[0.1px] text-center text-[12px]">
+              <span className="hidden group-hover:block">{card.priority}</span>
+            </div>
           ) : card.isImportant ? (
             <div className="w-10 h-[5px] absolute z-10 bg-[#ffff00] bottom-[0px] left-[0.1px] text-center text-[12px]"></div>
           ) : card.isUrgent === false && card.isImportant === false ? (
