@@ -27,8 +27,8 @@ export default function AddTodo(props) {
     const timeString = props.time;
 
     const dateParts = dateString.split("/");
-    const monthNumber = parseInt(dateParts[0], 10);
-    const day = dateParts[1];
+    const monthNumber = parseInt(dateParts[1], 10);
+    const day = dateParts[0];
     const year = dateParts[2];
 
     const month = new Date(year, monthNumber - 1).toLocaleString('en-GB', { month: "short"});
@@ -51,14 +51,14 @@ export default function AddTodo(props) {
 
     return (
         <>
-            <div className="col-start-1 gap-2 col-end-11 mb-2 grid grid-cols-[1fr_1fr] grid-rows-[1fr]">
-                <button className="col-start-1 hover:bg-blue-500 transform transition-all duration-300 rounded-lg rounded-br-[0px] border p-2 col-span-1" onClick={handleTask}>Task</button>
-                <button className="col-start-2 hover:bg-blue-500 transform transition-all duration-300 p-2 rounded-lg rounded-br-[0px] col-span-1 border" onClick={handleTodo}>Todo-List</button>
+            <div className="col-start-1 col-end-11 border-[0px] mb-2 grid grid-cols-[1fr_1fr] grid-rows-[1fr]">
+                <button className={`col-start-1 hover:bg-blue-500 ${showTask ? "bg-blue-500": ""} transform transition-all rounded-lg rounded-br-[0px] rounded-bl-[0px] duration-200 border-b-[1px] border-blue-500 p-2 col-span-1`} onClick={handleTask}>Task</button>
+                <button className={`col-start-2 hover:bg-blue-500 ${showTodo ? "bg-blue-500": ""} transform transition-all rounded-lg rounded-br-[0px] rounded-bl-[0px] duration-200 p-2 col-span-1 border-b-[1px] border-blue-500`} onClick={handleTodo}>Todo-List</button>
             </div>
 
             {showTask && (
                 <div className="grid auto-rows-auto gap-2 grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr]">
-                    <div className="row-span-1 col-span-10 border flex flex-row justify-center items-center rounded-lg rounded-br-[0px] bg-[#ffffff] pr-1 gap-1">
+                    <div className="row-span-1 col-span-10 flex flex-row justify-center items-center rounded-lg rounded-br-[0px]  pr-1 gap-1">
                         {props.titleInput}
                         {props.priority && (
                             <div className={`${bgColor} w-fit h-fit p-1 rounded-lg rounded-br-[0px]`}>{props.priority}</div>

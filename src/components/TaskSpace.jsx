@@ -2,10 +2,28 @@ import { useState } from "react";
 import { MdOutlineDelete } from "react-icons/md";
 import { BiLogoBaidu } from "react-icons/bi";
 import ProgressBar from './ProgressBar';
+import { MdOutlineMoreTime } from "react-icons/md";
+import { LuUserPlus } from "react-icons/lu";
+import { IoColorPaletteOutline } from "react-icons/io5";
+import { TbAlarmPlus } from "react-icons/tb";
+import { TbFlagPlus } from "react-icons/tb";
 
 export default function TaskSpace(props) {
+  const [hoveredButton, setHoveredButton] = useState(null);
+
+  const handleMouseEnter = (id) => {
+    setHoveredButton(id);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredButton(null);
+  };
+
   // Assuming `props.cards` is the array of card data from the DB
   const cards = props.cards
+
+
+  const numOfColumns = props.isExpanded ? 4 : 3
 
   const Priority1 = []
   const Priority2 = []
@@ -38,15 +56,16 @@ export default function TaskSpace(props) {
 
 
   // Function to organize cards into 3 columns
-  const columns = [[], [], []];
+  const columns = props.isExpanded ? [[], [], [], []] : [[], [], []];
 
   // Distribute cards into the three columns
   combinedArray.forEach((card, index) => {
-    columns[index % 3].push(card);
+    columns[index % numOfColumns].push(card);
   });
 
   if (cards.length == 0) return (
-  <div className={`rounded-xl gap-2 p-2 hide-scrollbar overflow-auto col-start-2 row-start-2 row-end-5 ${props.bgColor}`}>
+  <div className={`rounded-xl relative gap-2 p-2 hide-scrollbar ${props.isExpanded? 'col-span-3': 'col-span-1'} overflow-auto col-start-2 row-start-2 row-end-5 ${props.bgColor}`}>
+    <div className="absolute w-[25px] h-20 top-[40%] right-0 overflow-auto group hide-scrollbar z-10 flex justify-center items-center">{props.expandButton}</div>
       <div className="h-full flex flex-col gap-2 col-span-1 flex flex-col justify-center items-center">
         <BiLogoBaidu size={195} className="text-[#A0A0A0] text-opacity-10" />
         <h1 className="text-[#A0A0A0] text-opacity-10">No tasks added yet</h1>
@@ -55,58 +74,145 @@ export default function TaskSpace(props) {
   )
 
   return (
-    <div className={`rounded-xl grid grid-cols-3 gap-2 p-2 hide-scrollbar overflow-auto col-start-2 row-start-2 row-end-5 ${props.bgColor}`}>
+    <div className={`rounded-xl relative col-start-2 transition-all duration-300 ease-in-out transform ${props.isExpanded? 'col-span-3': 'col-span-1'} hide-scrollbar row-start-2 row-end-5 ${props.bgColor}`}>
+      <div className="absolute w-[25px] h-20 top-[40%] right-0 overflow-auto group hide-scrollbar z-10 flex justify-center items-center">{props.expandButton}</div>
+      <div className={`grid absolute w-full h-full ${props.isExpanded? 'grid-cols-4': 'grid-cols-3'} gap-2 p-2 hide-scrollbar overflow-auto`}>
       <div className="h-full flex flex-col gap-2 col-span-1">
         {columns[0].map((card, index) => (
           <div className={`w-full relative h-fit border-[1px] border-[#333333] bg-[#1E1E1E] hover:shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]  flex flex-col gap-2 p-4 rounded-[5px] rounded-br-[0px] rounded-bl-[0px] card-animation transition-all duration-300 group`} key={index}>  
             {index*3 === props.hoveredCardIndex ? (<div className='w-full h-full inset-0 absolute border rounded-[5px] rounded-br-[0px] rounded-bl-[0px] shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]'></div>) : (null)} 
             <h3 className="text-[#A0A0A0]">{card.title}</h3>
             <p className="text-[#E0E0E0]">{card.description}</p>
-            <div className="w-full h-fit flex flex-row gap-2 justify-end">
-             <button className="focus:outline-none opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" onClick={() => props.deleteCard(card.createdAt)}><MdOutlineDelete /></button>
+            <div className="w-full h-fit flex flex-row justify-between">
+             <button 
+             className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20"
+             id='alarm'
+             onMouseEnter={() => handleMouseEnter("alarm")}
+             onMouseLeave={handleMouseLeave}
+             >
+              <TbAlarmPlus size={20}/>
+              {hoveredButton === 'alarm' && (
+                <span className="absolute gap-1 flex flex-row text-[10px] text-bold p-1 bottom-[-30px] z-10  rounded opacity-0 group-hover:opacity-100 bg-gray-500">
+                  <span>Set</span><span>reminder</span>
+                </span>
+              )}
+             </button>
+             <button 
+             className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20"
+             id='alarm'
+             onMouseEnter={() => handleMouseEnter("priority")}
+             onMouseLeave={handleMouseLeave}
+             >
+              <TbFlagPlus size={20}/>
+              {hoveredButton === 'priority' && (
+                <span className="absolute text-[10px] gap-1 flex flex-row p-1 bottom-[-30px] z-10  rounded opacity-0 group-hover:opacity-100 bg-gray-500">
+                  <span>Set</span><span>priority</span>
+                </span>
+              )}
+             </button>
+             <button 
+             className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" 
+             id='color'
+             onMouseEnter={() => handleMouseEnter("color")}
+             onMouseLeave={handleMouseLeave}
+             >
+              <IoColorPaletteOutline className="relative group" size={20}/>
+              {hoveredButton === 'color' && (
+                <span className="absolute text-[10px] flex flex-row gap-1 p-1 bottom-[-30px] z-10 p-1 rounded opacity-0 group-hover:opacity-100 bg-gray-500" >
+                  <span>Change</span><span>Background</span>
+                </span>
+              )}
+             </button>
+             <button 
+             className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" 
+             id='addUser'
+             onMouseEnter={() => handleMouseEnter("addUser")}
+             onMouseLeave={handleMouseLeave}
+             >
+              <LuUserPlus className="relative group" size={20}/>
+              {hoveredButton === 'addUser' && (
+                <span className="absolute text-[10px] p-1 bottom-[-30px] z-10 p-1 rounded opacity-0 group-hover:opacity-100 bg-gray-500">
+                  Collaborate
+                </span>
+              )}
+             </button>
+             <button 
+             className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" 
+             id="deadline"
+             onMouseEnter={() => handleMouseEnter("deadline")}
+             onMouseLeave={handleMouseLeave}
+             >
+              <MdOutlineMoreTime className="relative group" size={20}/>
+              {hoveredButton === 'deadline' && (
+                <span className="absolute text-[10px] bottom-[-30px] z-10 p-1 rounded opacity-0 group-hover:opacity-100 bg-gray-500">
+                  {card.secondsLeft ? (<div className="flex flex-row gap-1"><span>Edit</span><span>Deadline</span></div>) : (<div className="flex flex-row gap-1"><span>Add</span><span>Deadline</span></div>)}
+                </span>
+              )}
+             </button>
+             <button 
+             className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" 
+             id='delete' 
+             onClick={() => props.deleteCard(card.createdAt)}
+             onMouseEnter={() => handleMouseEnter("delete")}
+             onMouseLeave={handleMouseLeave}
+             >
+              <MdOutlineDelete className="relative group" size={20}/>
+              {hoveredButton === 'delete' && (
+                <span className="absolute text-[10px] bottom-[-30px] z-10 p-1 rounded opacity-0 group-hover:opacity-100 bg-gray-500">
+                  delete
+                </span>
+              )}
+             </button>
             </div>
             {card.isUrgent && card.isImportant ? (
-              <div className="w-10 h-[5px] absolute z-10 bg-[#ff0000] bottom-[0px] left-[0.1px] text-center text-[12px]"></div>
+              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className="w-10 h-full bg-[#ff0000] "></div>
+                {card.secondsLeft ? (
+                  <ProgressBar
+                  createdTime={card.createdAt}
+                  deadLine={card.deadLine}
+                  color="red"
+                  isExpanded={props.isExpanded}
+                />
+                ): null}
+            </div>
             ) : card.isUrgent ? (
-              <div className="w-10 h-[5px] absolute z-10 bg-[#0000ff] bottom-[0px] left-[0.1px] text-center text-[12px]"></div>
-            ) : card.isImportant ? (
-              <div className="w-10 h-[5px] absolute z-10 bg-[#ffff00] bottom-[0px] left-[0.1px] text-center text-[12px]"></div>
-            ) : card.isUrgent === false && card.isImportant === false ? (
-              <div className="w-10 h-[5px] absolute z-10 bg-[#808080] bottom-[0px] left-[0.1px] text-center text-[12px]"></div>
-          ) : null }
-            {card.secondsLeft ? (
-              <div className="absolute bottom-[0px] right-[0px]">
-                {card.isUrgent && card.isImportant ? (
+              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className="w-10 h-full bg-[#0000ff] "></div>
+                {card.secondsLeft ? (
                   <ProgressBar
-                    createdTime={card.createdAt}
-                    deadlineDate={card.deadLineDate}
-                    deadlineTime={card.deadLineTime}
-                    color="red"
-                  />
-                ) : card.isUrgent ? (
-                  <ProgressBar
-                    createdTime={card.createdAt}
-                    deadlineDate={card.deadLineDate}
-                    deadlineTime={card.deadLineTime}
-                    color="blue"
-                  />
-                ) : card.isImportant ? (
-                  <ProgressBar
-                    createdTime={card.createdAt}
-                    deadlineDate={card.deadLineDate}
-                    deadlineTime={card.deadLineTime}
-                    color="yellow"
-                  />
-                ) : (
-                  <ProgressBar
-                    createdTime={card.createdAt}
-                    deadlineDate={card.deadLineDate}
-                    deadlineTime={card.deadLineTime}
-                    color="gray"
-                  />
-                )}
+                  createdTime={card.createdAt}
+                  deadLine={card.deadLine}
+                  color="blue"
+                  isExpanded={props.isExpanded}
+                />
+                ): null}
               </div>
-            ) : null}
+            ) : card.isImportant ? (
+              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className="w-10 h-full bg-[#ffff00] "></div>
+                {card.secondsLeft ? (
+                  <ProgressBar
+                  createdTime={card.createdAt}
+                  deadLine={card.deadLine}
+                  color="yellow"
+                  isExpanded={props.isExpanded}
+                />
+                ): null}
+              </div>
+            ) : card.isUrgent === false && card.isImportant === false ? (
+              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className="w-10 h-full bg-[#808080]"></div>
+                {card.secondsLeft ? (
+                  <ProgressBar
+                  createdTime={card.createdAt}
+                  deadLine={card.deadLine}
+                  color="gray"
+                  isExpanded={props.isExpanded}
+                />
+                ): null}
+              </div>
+          ) : null }
           </div>
         ))}
       </div>
@@ -116,107 +222,419 @@ export default function TaskSpace(props) {
           {index*3 + 1 === props.hoveredCardIndex ? (<div className='w-full h-full inset-0 absolute border rounded-[5px] rounded-br-[0px] rounded-bl-[0px] shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]'></div>) : (null)} 
           <h3 className="text-[#A0A0A0]">{card.title}</h3>
           <p className="text-[#E0E0E0]">{card.description}</p>
-          <div className="w-full h-fit flex flex-row gap-2 justify-end">
-           <button className="focus:outline-none opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" onClick={() => props.deleteCard(card.createdAt)}><MdOutlineDelete /></button>
-          </div>
+          <div className="w-full h-fit flex flex-row justify-between">
+             <button 
+             className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20"
+             id='alarm'
+             onMouseEnter={() => handleMouseEnter("alarm")}
+             onMouseLeave={handleMouseLeave}
+             >
+              <TbAlarmPlus size={20}/>
+              {hoveredButton === 'alarm' && (
+                <span className="absolute gap-1 flex flex-row text-[10px] text-bold p-1 bottom-[-30px] z-10  rounded opacity-0 group-hover:opacity-100 bg-gray-500">
+                  <span>Set</span><span>reminder</span>
+                </span>
+              )}
+             </button>
+             <button 
+             className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20"
+             id='alarm'
+             onMouseEnter={() => handleMouseEnter("priority")}
+             onMouseLeave={handleMouseLeave}
+             >
+              <TbFlagPlus size={20}/>
+              {hoveredButton === 'priority' && (
+                <span className="absolute text-[10px] gap-1 flex flex-row p-1 bottom-[-30px] z-10  rounded opacity-0 group-hover:opacity-100 bg-gray-500">
+                  <span>Set</span><span>priority</span>
+                </span>
+              )}
+             </button>
+             <button 
+             className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" 
+             id='color'
+             onMouseEnter={() => handleMouseEnter("color")}
+             onMouseLeave={handleMouseLeave}
+             >
+              <IoColorPaletteOutline className="relative group" size={20}/>
+              {hoveredButton === 'color' && (
+                <span className="absolute text-[10px] flex flex-row gap-1 p-1 bottom-[-30px] z-10 p-1 rounded opacity-0 group-hover:opacity-100 bg-gray-500" >
+                  <span>Change</span><span>Background</span>
+                </span>
+              )}
+             </button>
+             <button 
+             className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" 
+             id='addUser'
+             onMouseEnter={() => handleMouseEnter("addUser")}
+             onMouseLeave={handleMouseLeave}
+             >
+              <LuUserPlus className="relative group" size={20}/>
+              {hoveredButton === 'addUser' && (
+                <span className="absolute text-[10px] p-1 bottom-[-30px] z-10 p-1 rounded opacity-0 group-hover:opacity-100 bg-gray-500">
+                  Collaborate
+                </span>
+              )}
+             </button>
+             <button 
+             className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" 
+             id="deadline"
+             onMouseEnter={() => handleMouseEnter("deadline")}
+             onMouseLeave={handleMouseLeave}
+             >
+              <MdOutlineMoreTime className="relative group" size={20}/>
+              {hoveredButton === 'deadline' && (
+                <span className="absolute text-[10px] bottom-[-30px] z-10 p-1 rounded opacity-0 group-hover:opacity-100 bg-gray-500">
+                  {card.secondsLeft ? (<div className="flex flex-row gap-1"><span>Edit</span><span>Deadline</span></div>) : (<div className="flex flex-row gap-1"><span>Add</span><span>Deadline</span></div>)}
+                </span>
+              )}
+             </button>
+             <button 
+             className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" 
+             id='delete' 
+             onClick={() => props.deleteCard(card.createdAt)}
+             onMouseEnter={() => handleMouseEnter("delete")}
+             onMouseLeave={handleMouseLeave}
+             >
+              <MdOutlineDelete className="relative group" size={20}/>
+              {hoveredButton === 'delete' && (
+                <span className="absolute text-[10px] bottom-[-30px] z-10 p-1 rounded opacity-0 group-hover:opacity-100 bg-gray-500">
+                  delete
+                </span>
+              )}
+             </button>
+            </div>
           {card.isUrgent && card.isImportant ? (
-              <div className="w-10 h-[5px] absolute z-10 bg-[#ff0000] bottom-[0px] left-[0.1px] text-center text-[12px]"></div>
+              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className="w-10 h-full bg-[#ff0000] "></div>
+                {card.secondsLeft ? (
+                  <ProgressBar
+                  createdTime={card.createdAt}
+                  deadLine={card.deadLine}
+                  color="red"
+                  isExpanded={props.isExpanded}
+                />
+                ): null}
+            </div>
             ) : card.isUrgent ? (
-              <div className="w-10 h-[5px] absolute z-10 bg-[#0000ff] bottom-[0px] left-[0.1px] text-center text-[12px]"></div>
-            ) : card.isImportant ? (
-              <div className="w-10 h-[5px] absolute z-10 bg-[#ffff00] bottom-[0px] left-[0.1px] text-center text-[12px]"></div>
-            ) : card.isUrgent === false && card.isImportant === false ? (
-              <div className="w-10 h-[5px] absolute z-10 bg-[#808080] bottom-[0px] left-[0.1px] text-center text-[12px]"></div>
-          ) : null }
-            {card.secondsLeft ? (
-              <div className="absolute bottom-[0px] right-[0px]">
-                {card.isUrgent && card.isImportant ? (
+              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className="w-10 h-full bg-[#0000ff] "></div>
+                {card.secondsLeft ? (
                   <ProgressBar
-                    createdTime={card.createdAt}
-                    deadlineDate={card.deadLineDate}
-                    deadlineTime={card.deadLineTime}
-                    color="red"
-                  />
-                ) : card.isUrgent ? (
-                  <ProgressBar
-                    createdTime={card.createdAt}
-                    deadlineDate={card.deadLineDate}
-                    deadlineTime={card.deadLineTime}
-                    color="blue"
-                  />
-                ) : card.isImportant ? (
-                  <ProgressBar
-                    createdTime={card.createdAt}
-                    deadlineDate={card.deadLineDate}
-                    deadlineTime={card.deadLineTime}
-                    color="yellow"
-                  />
-                ) : (
-                  <ProgressBar
-                    createdTime={card.createdAt}
-                    deadlineDate={card.deadLineDate}
-                    deadlineTime={card.deadLineTime}
-                    color="gray"
-                  />
-                )}
+                  createdTime={card.createdAt}
+                  deadLine={card.deadLine}
+                  color="blue"
+                  isExpanded={props.isExpanded}
+                />
+                ): null}
               </div>
-            ) : null}
+            ) : card.isImportant ? (
+              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className="w-10 h-full bg-[#ffff00] "></div>
+                {card.secondsLeft ? (
+                  <ProgressBar
+                  createdTime={card.createdAt}
+                  deadLine={card.deadLine}
+                  color="yellow"
+                  isExpanded={props.isExpanded}
+                />
+                ): null}
+              </div>
+            ) : card.isUrgent === false && card.isImportant === false ? (
+              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className="w-10 h-full bg-[#808080]"></div>
+                {card.secondsLeft ? (
+                  <ProgressBar
+                  createdTime={card.createdAt}
+                  deadLine={card.deadLine}
+                  color="gray"
+                  isExpanded={props.isExpanded}
+                />
+                ): null}
+              </div>
+          ) : null }
         </div>
         ))}
       </div>
       <div className="h-full flex flex-col gap-2 col-span-1">
         {columns[2].map((card, index) => (
-          <div className={`w-full relative h-fit border-[1px] border-[#333333] bg-[#1E1E1E] hover:shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]  flex flex-col gap-2 p-4 rounded-[5px] rounded-br-[0px] rounded-bl-[0px] card-animation transition-all duration-300 group`} key={index}>  
+          <div className={`w-full relative z-1 h-fit border-[1px] border-[#333333] bg-[#1E1E1E] hover:shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]  flex flex-col gap-2 p-4 rounded-[5px] rounded-br-[0px] rounded-bl-[0px] card-animation transition-all duration-300 group`} key={index}>  
           {index*3 + 2 === props.hoveredCardIndex ? (<div className='w-full h-full inset-0 absolute border rounded-[5px] rounded-br-[0px] rounded-bl-[0px] shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]'></div>) : (null)} 
           <h3 className="text-[#A0A0A0]">{card.title}</h3>
           <p className="text-[#E0E0E0]">{card.description}</p>
-          <div className="w-full h-fit flex flex-row gap-2 justify-end">
-           <button className="focus:outline-none opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" onClick={() => props.deleteCard(card.createdAt)}><MdOutlineDelete /></button>
-          </div>
+          <div className="w-full h-fit flex flex-row justify-between">
+             <button 
+             className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20"
+             id='alarm'
+             onMouseEnter={() => handleMouseEnter("alarm")}
+             onMouseLeave={handleMouseLeave}
+             >
+              <TbAlarmPlus size={20}/>
+              {hoveredButton === 'alarm' && (
+                <span className="absolute gap-1 flex flex-row text-[10px] text-bold p-1 bottom-[-30px] z-10  rounded opacity-0 group-hover:opacity-100 bg-gray-500">
+                  <span>Set</span><span>reminder</span>
+                </span>
+              )}
+             </button>
+             <button 
+             className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20"
+             id='alarm'
+             onMouseEnter={() => handleMouseEnter("priority")}
+             onMouseLeave={handleMouseLeave}
+             >
+              <TbFlagPlus size={20}/>
+              {hoveredButton === 'priority' && (
+                <span className="absolute text-[10px] gap-1 flex flex-row p-1 bottom-[-30px] z-10  rounded opacity-0 group-hover:opacity-100 bg-gray-500">
+                  <span>Set</span><span>priority</span>
+                </span>
+              )}
+             </button>
+             <button 
+             className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" 
+             id='color'
+             onMouseEnter={() => handleMouseEnter("color")}
+             onMouseLeave={handleMouseLeave}
+             >
+              <IoColorPaletteOutline className="relative group" size={20}/>
+              {hoveredButton === 'color' && (
+                <span className="absolute text-[10px] flex flex-row gap-1 p-1 bottom-[-30px] z-10 p-1 rounded opacity-0 group-hover:opacity-100 bg-gray-500" >
+                  <span>Change</span><span>Background</span>
+                </span>
+              )}
+             </button>
+             <button 
+             className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" 
+             id='addUser'
+             onMouseEnter={() => handleMouseEnter("addUser")}
+             onMouseLeave={handleMouseLeave}
+             >
+              <LuUserPlus className="relative group" size={20}/>
+              {hoveredButton === 'addUser' && (
+                <span className="absolute text-[10px] p-1 bottom-[-30px] z-10 p-1 rounded opacity-0 group-hover:opacity-100 bg-gray-500">
+                  Collaborate
+                </span>
+              )}
+             </button>
+             <button 
+             className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" 
+             id="deadline"
+             onMouseEnter={() => handleMouseEnter("deadline")}
+             onMouseLeave={handleMouseLeave}
+             >
+              <MdOutlineMoreTime className="relative group" size={20}/>
+              {hoveredButton === 'deadline' && (
+                <span className="absolute text-[10px] bottom-[-30px] z-10 p-1 rounded opacity-0 group-hover:opacity-100 bg-gray-500">
+                  {card.secondsLeft ? (<div className="flex flex-row gap-1"><span>Edit</span><span>Deadline</span></div>) : (<div className="flex flex-row gap-1"><span>Add</span><span>Deadline</span></div>)}
+                </span>
+              )}
+             </button>
+             <button 
+             className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" 
+             id='delete' 
+             onClick={() => props.deleteCard(card.createdAt)}
+             onMouseEnter={() => handleMouseEnter("delete")}
+             onMouseLeave={handleMouseLeave}
+             >
+              <MdOutlineDelete className="relative group" size={20}/>
+              {hoveredButton === 'delete' && (
+                <span className="absolute text-[10px] bottom-[-30px] z-10 p-1 rounded opacity-0 group-hover:opacity-100 bg-gray-500">
+                  delete
+                </span>
+              )}
+             </button>
+            </div>
           {card.isUrgent && card.isImportant ? (
-            <div className="w-10 h-[5px] absolute z-10 bg-[#D32F2F] bottom-[0px] left-[0.1px] text-center text-[12px]"></div>
-          ) : card.isUrgent ? (
-            <div className="w-10 h-[5px] absolute z-10 bg-[#0000ff] bottom-[0px] left-[0.1px] text-center text-[12px]"></div>
-          ) : card.isImportant ? (
-            <div className="w-10 h-[5px] absolute z-10 bg-[#ffff00] bottom-[0px] left-[0.1px] text-center text-[12px]"></div>
-          ) : card.isUrgent === false && card.isImportant === false ? (
-            <div className="w-10 h-[5px] absolute z-10 bg-[#808080] bottom-[0px] left-[0.1px] text-center text-[12px]"></div>
-        ) : null }
-          {card.secondsLeft ? (
-              <div className="absolute bottom-[0px] right-[0px]">
-                {card.isUrgent && card.isImportant ? (
+              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className="w-10 h-full bg-[#ff0000] "></div>
+                {card.secondsLeft ? (
                   <ProgressBar
-                    createdTime={card.createdAt}
-                    deadlineDate={card.deadLineDate}
-                    deadlineTime={card.deadLineTime}
-                    color="red"
-                  />
-                ) : card.isUrgent ? (
+                  createdTime={card.createdAt}
+                  deadLine={card.deadLine}
+                  color="red"
+                  isExpanded={props.isExpanded}
+                />
+                ): null}
+            </div>
+            ) : card.isUrgent ? (
+              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className="w-10 h-full bg-[#0000ff] "></div>
+                {card.secondsLeft ? (
                   <ProgressBar
-                    createdTime={card.createdAt}
-                    deadlineDate={card.deadLineDate}
-                    deadlineTime={card.deadLineTime}
-                    color="blue"
-                  />
-                ) : card.isImportant ? (
-                  <ProgressBar
-                    createdTime={card.createdAt}
-                    deadlineDate={card.deadLineDate}
-                    deadlineTime={card.deadLineTime}
-                    color="yellow"
-                  />
-                ) : (
-                  <ProgressBar
-                    createdTime={card.createdAt}
-                    deadlineDate={card.deadLineDate}
-                    deadlineTime={card.deadLineTime}
-                    color="gray"
-                  />
-                )}
+                  createdTime={card.createdAt}
+                  deadLine={card.deadLine}
+                  color="blue"
+                  isExpanded={props.isExpanded}
+                />
+                ): null}
               </div>
-            ) : null}
+            ) : card.isImportant ? (
+              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className="w-10 h-full bg-[#ffff00] "></div>
+                {card.secondsLeft ? (
+                  <ProgressBar
+                  createdTime={card.createdAt}
+                  deadLine={card.deadLine}
+                  color="yellow"
+                  isExpanded={props.isExpanded}
+                />
+                ): null}
+              </div>
+            ) : card.isUrgent === false && card.isImportant === false ? (
+              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className="w-10 h-full bg-[#808080]"></div>
+                {card.secondsLeft ? (
+                  <ProgressBar
+                  createdTime={card.createdAt}
+                  deadLine={card.deadLine}
+                  color="gray"
+                  isExpanded={props.isExpanded}
+                />
+                ): null}
+              </div>
+          ) : null }
         </div>
         ))}
+      </div>
+      {props.isExpanded ? (
+        <div className="h-full flex flex-col gap-2 col-span-1">
+        {columns[3].map((card, index) => (
+          <div className={`w-full relative z-1 h-fit border-[1px] border-[#333333] bg-[#1E1E1E] hover:shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]  flex flex-col gap-2 p-4 rounded-[5px] rounded-br-[0px] rounded-bl-[0px] card-animation transition-all duration-300 group`} key={index}>  
+          {index*3 + 3 === props.hoveredCardIndex ? (<div className='w-full h-full inset-0 absolute border rounded-[5px] rounded-br-[0px] rounded-bl-[0px] shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]'></div>) : (null)} 
+          <h3 className="text-[#A0A0A0]">{card.title}</h3>
+          <p className="text-[#E0E0E0]">{card.description}</p>
+          <div className="w-full h-fit flex flex-row justify-between">
+             <button 
+             className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20"
+             id='alarm'
+             onMouseEnter={() => handleMouseEnter("alarm")}
+             onMouseLeave={handleMouseLeave}
+             >
+              <TbAlarmPlus size={20}/>
+              {hoveredButton === 'alarm' && (
+                <span className="absolute gap-1 flex flex-row text-[10px] text-bold p-1 bottom-[-30px] z-10  rounded opacity-0 group-hover:opacity-100 bg-gray-500">
+                  <span>Set</span><span>reminder</span>
+                </span>
+              )}
+             </button>
+             <button 
+             className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20"
+             id='alarm'
+             onMouseEnter={() => handleMouseEnter("priority")}
+             onMouseLeave={handleMouseLeave}
+             >
+              <TbFlagPlus size={20}/>
+              {hoveredButton === 'priority' && (
+                <span className="absolute text-[10px] gap-1 flex flex-row p-1 bottom-[-30px] z-10  rounded opacity-0 group-hover:opacity-100 bg-gray-500">
+                  <span>Set</span><span>priority</span>
+                </span>
+              )}
+             </button>
+             <button 
+             className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" 
+             id='color'
+             onMouseEnter={() => handleMouseEnter("color")}
+             onMouseLeave={handleMouseLeave}
+             >
+              <IoColorPaletteOutline className="relative group" size={20}/>
+              {hoveredButton === 'color' && (
+                <span className="absolute text-[10px] flex flex-row gap-1 p-1 bottom-[-30px] z-10 p-1 rounded opacity-0 group-hover:opacity-100 bg-gray-500" >
+                  <span>Change</span><span>Background</span>
+                </span>
+              )}
+             </button>
+             <button 
+             className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" 
+             id='addUser'
+             onMouseEnter={() => handleMouseEnter("addUser")}
+             onMouseLeave={handleMouseLeave}
+             >
+              <LuUserPlus className="relative group" size={20}/>
+              {hoveredButton === 'addUser' && (
+                <span className="absolute text-[10px] p-1 bottom-[-30px] z-10 p-1 rounded opacity-0 group-hover:opacity-100 bg-gray-500">
+                  Collaborate
+                </span>
+              )}
+             </button>
+             <button 
+             className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" 
+             id="deadline"
+             onMouseEnter={() => handleMouseEnter("deadline")}
+             onMouseLeave={handleMouseLeave}
+             >
+              <MdOutlineMoreTime className="relative group" size={20}/>
+              {hoveredButton === 'deadline' && (
+                <span className="absolute text-[10px] bottom-[-30px] z-10 p-1 rounded opacity-0 group-hover:opacity-100 bg-gray-500">
+                  {card.secondsLeft ? (<div className="flex flex-row gap-1"><span>Edit</span><span>Deadline</span></div>) : (<div className="flex flex-row gap-1"><span>Add</span><span>Deadline</span></div>)}
+                </span>
+              )}
+             </button>
+             <button 
+             className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" 
+             id='delete' 
+             onClick={() => props.deleteCard(card.createdAt)}
+             onMouseEnter={() => handleMouseEnter("delete")}
+             onMouseLeave={handleMouseLeave}
+             >
+              <MdOutlineDelete className="relative group" size={20}/>
+              {hoveredButton === 'delete' && (
+                <span className="absolute text-[10px] bottom-[-30px] z-10 p-1 rounded opacity-0 group-hover:opacity-100 bg-gray-500">
+                  delete
+                </span>
+              )}
+             </button>
+            </div>
+          {card.isUrgent && card.isImportant ? (
+              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className="w-10 h-full bg-[#ff0000] "></div>
+                {card.secondsLeft ? (
+                  <ProgressBar
+                  createdTime={card.createdAt}
+                  deadLine={card.deadLine}
+                  color="red"
+                  isExpanded={props.isExpanded}
+                />
+                ): null}
+            </div>
+            ) : card.isUrgent ? (
+              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className="w-10 h-full bg-[#0000ff] "></div>
+                {card.secondsLeft ? (
+                  <ProgressBar
+                  createdTime={card.createdAt}
+                  deadLine={card.deadLine}
+                  color="blue"
+                  isExpanded={props.isExpanded}
+                />
+                ): null}
+              </div>
+            ) : card.isImportant ? (
+              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className="w-10 h-full bg-[#ffff00] "></div>
+                {card.secondsLeft ? (
+                  <ProgressBar
+                  createdTime={card.createdAt}
+                  deadLine={card.deadLine}
+                  color="yellow"
+                  isExpanded={props.isExpanded}
+                />
+                ): null}
+              </div>
+            ) : card.isUrgent === false && card.isImportant === false ? (
+              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className="w-10 h-full bg-[#808080]"></div>
+                {card.secondsLeft ? (
+                  <ProgressBar
+                  createdTime={card.createdAt}
+                  deadLine={card.deadLine}
+                  color="gray"
+                  isExpanded={props.isExpanded}
+                />
+                ): null}
+              </div>
+          ) : null }
+        </div>
+        ))}
+      </div>
+      ): null}
       </div>
     </div>
   );

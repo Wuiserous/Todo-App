@@ -3,6 +3,8 @@ import './App.css'
 import { MdWbSunny } from "react-icons/md";
 import { AiFillMoon } from "react-icons/ai";
 import { IoMdAddCircle } from "react-icons/io";
+import { FaAngleRight } from "react-icons/fa";
+import { FaAngleLeft } from "react-icons/fa";
 import ToolBar from './components/ToolBar'
 import NavBar from './components/NavBar'
 import TaskSpace from './components/TaskSpace'
@@ -16,7 +18,7 @@ import { TbUrgent } from "react-icons/tb";
 import { FaRegBell } from "react-icons/fa";
 import { IoIosTimer } from "react-icons/io";
 import DeadLineModal from './components/DeadLineModal';
-import * as chrono from 'chrono-node';
+import axios from 'axios';
 
 
 function App() {
@@ -27,11 +29,13 @@ function App() {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [hoveredCardIndex, setHoveredCardIndex] = useState(null);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [isUrgent, setIsUrgent] = useState(false);
   const [isImportant, setIsImportant] = useState(false);
   const [deadLineText, setDeadLineText] = useState('');
   const [deadLineDate, setDeadLineDate] = useState('');
   const [deadLineTime, setDeadLineTime] = useState('');
+  const [deadLine, setDeadLine] = useState('');
   const [priority, setPriority] = useState('');
 
   const setTaskPriority = (isUrgent, isImportant) => {
@@ -46,14 +50,18 @@ function App() {
     }
   };
 
-  const extractDateTime = (inputText) => {
-    const result = chrono.parse(inputText)
-    console.log(result)
-
-    if (result.length > 0) {
-      const parseDate = result[0].start.date();
-      setDeadLineDate(parseDate.toLocaleDateString());
-      setDeadLineTime(parseDate.toLocaleTimeString());
+  const extractDateTime = async (inputText) => {
+    try {
+      const response = await axios.post('http://localhost:5000/extract-datetime', {
+        inputText,
+      });
+      const { date, time, deadline } = response.data;
+      setDeadLineDate(date);
+      setDeadLineTime(time);
+      setDeadLine(deadline);
+      console.log(`Date: ${date}, Time: ${time}, Deadline: ${deadline}`)
+    } catch (error) {
+      console.error('Error extracting date/time:', error.response?.data || error.message);
     }
     setDeadLineText('')
     hideDeadLineModal()
@@ -75,21 +83,25 @@ function App() {
     setDeadLineText('')
     setDeadLineDate('')
     setDeadLineTime('')
+    setDeadLine('')
   }
 
   const addCard = (card) => {
     setCards([...cards, card])
+    console.log('new card added')
+    console.log(card)
   }
 
   function handleSubmit(e) {
     e.preventDefault();
   
     const createdAt = new Date().toISOString(); // Current time in ISO format
-    const deadlineDateTime = new Date(`${deadLineDate} ${deadLineTime}`); // Combine date and time
   
     // Calculate seconds remaining
     const createdAtDate = new Date(createdAt); 
-    const secondsLeft = Math.floor((deadlineDateTime - createdAtDate) / 1000); 
+    const deadLineDate = new Date(deadLine); 
+    const secondsLeft = Math.floor((deadLineDate - createdAtDate) / 1000);
+    console.log(secondsLeft)
   
     // Create a new card with the calculated secondsLeft
     const newCard = {
@@ -99,6 +111,7 @@ function App() {
       isImportant,
       deadLineDate,
       deadLineTime,
+      deadLine,
       priority,
       createdAt,
       secondsLeft // Add the calculated value to the card
@@ -116,6 +129,7 @@ function App() {
     setIsUrgent(false);
     setIsImportant(false);
     setPriority('');
+    setDeadLine('');
     hideModal();
   }
   
@@ -145,7 +159,7 @@ function App() {
   }
 
   return (
-    <div className='w-[100vw] overflow-hidden p-2 gap-2 h-[100vh] grid grid-cols-[50px_1100px_60px_1fr] grid-rows-[50px_1fr_1fr_1fr]'>
+    <div className={`w-[100vw] overflow-hidden p-2 gap-2 h-[100vh] grid grid-cols-[50px_1100px_60px_1fr] grid-rows-[50px_1fr_1fr_1fr]`}>
       <ToolBar bgColor={darkMode ? 'bg-slate-300' : 'bg-[#121212]'} 
                Button={<button className="w-10 focus:outline-none h-10 rounded-full flex items-center justify-center" 
                onClick={() => setShowModal(true)}>
@@ -157,7 +171,7 @@ function App() {
               </button>} 
               bgColor={darkMode ? 'bg-slate-300' : 'bg-[#121212]'} />
       
-      <TaskSpace deleteCard={deleteCard} cards={cards} bgColor={darkMode ? 'bg-slate-300' : 'bg-[#121212]'} hoveredCardIndex={hoveredCardIndex} />
+      <TaskSpace deleteCard={deleteCard} cards={cards} bgColor={darkMode ? 'bg-slate-300' : 'bg-[#121212]'} hoveredCardIndex={hoveredCardIndex} isExpanded={isExpanded} expandButton={<button className="absolute right-[-12px] transform duration-300 group-hover:right-[-2px] h-20 w-5 bg-white/5 backdrop-blur-[1px] border border-white/10  p-1 rounded rounded-tr-[1px] rounded-br-[0px]" onClick={() => setIsExpanded(!isExpanded)}>{ isExpanded ? <FaAngleLeft /> : <FaAngleRight />}</button>} />
       <ProgressSpace bgColor={darkMode ? 'bg-slate-300' : 'bg-[#121212]'} />
       <MotivationSpace bgColor={darkMode ? 'bg-slate-300' : 'bg-[#121212]'} />
 
@@ -170,7 +184,7 @@ function App() {
                           className=" text-black p-2 bg-transparent focus:outline-none w-full" />}
                  descriptionInput={<textarea name="description" value={description} placeholder="Task here..." 
                           onChange={(e) => setDescription(e.target.value)}
-                          className="rounded-lg rounded-br-[0px] text-black resize-none overflow-auto border border-gray-500 p-2 focus:outline-none bg-[#ffffff] col-start-1 col-span-10 row-start-2 row-span-10"></textarea>}
+                          className="rounded-lg rounded-br-[0px] text-black resize-none overflow-auto p-2 focus:outline-none bg-transparent col-start-1 col-span-10 row-start-2 row-span-10"></textarea>}
                  submitButton={<button className="col-start-1 col-span-7 row-start-12 row-end-13 hover:bg-blue-700 bg-blue-500 p-2 rounded-lg rounded-br-[0px]" 
                           onClick={handleSubmit}>Add</button>}
                  urgentButton={<button className={`rounded-lg rounded-br-[0px] border-none focus:outline-none col-start-9 col-span-1 row-start-12 row-end-13 p-2 

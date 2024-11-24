@@ -26,7 +26,7 @@ export default function Modal(props) {
         onClick={hide}
       >
         <div
-          className={`relative w-[500px] top-20 left-20 h-fit ${props.bgColor} rounded-xl rounded-br-[0px] transform transition-all duration-300 p-2 ${
+          className={`relative w-[500px] top-20 left-20 h-fit ${props.bgColor} rounded-lg transform transition-all duration-300 p-2 ${
             isVisible ? "scale-100 opacity-100" : "scale-50 opacity-0"
           }`}
         >
