@@ -67,14 +67,26 @@ export default function ProgressBar(props) {
     return color; // After 100%, revert back to blue
   };
 
+  const getBorderRadius = () => {
+    // If progress is between 97% and 100%, gradually increase the rounding
+    if (progress >= 95) {
+      // Interpolate border-radius from 0px to 9px as the progress goes from 97% to 100%
+      const radius = (progress - 95) * (9 / 5); // Max radius of 9px when progress is 100%
+      return `0px 0px ${radius}px 0px`;
+    }
+    return '0px'; // No rounding when progress is less than 97%
+  };
+  
+
   return (
     <div style={{ width: '100%', display: "flex", flexDirection: "column" }}>
-      <p style={{ fontSize: "10px", color: "gray", opacity: "0.75", position: "absolute", right: "0px", top: "-13px" }}>
+      <p style={{ fontSize: "10px", color: "gray", opacity: "0.75", position: "absolute", right: "1px", top: "-13px" }}>
         {progress.toFixed(0)}% {timeLeft}
       </p>
       <div
         style={{
-          height: "5px",
+          height: "9px",
+          borderRadius: getBorderRadius(),
           width: `${progress}%`,
           backgroundColor: getColor(),
           transition: "width 0.5s, background-color 0.5s",

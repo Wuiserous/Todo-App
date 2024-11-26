@@ -85,12 +85,12 @@ export default function TaskSpace(props) {
   )
 
   return (
-    <div className={`rounded-xl relative col-start-2 transition-all duration-300 ease-in-out transform ${props.isExpanded? 'col-span-3': 'col-span-1'} hide-scrollbar row-start-2 row-end-5 ${props.bgColor}`}>
+    <div className={`rounded-[13px] relative col-start-2 transition-all duration-300 ease-in-out transform ${props.isExpanded? 'col-span-3': 'col-span-1'} hide-scrollbar row-start-2 row-end-5 ${props.bgColor}`}>
       <div className="absolute w-[25px] h-20 top-[40%] right-0 overflow-auto group hide-scrollbar z-10 flex justify-center items-center">{props.expandButton}</div>
       <div className={`grid absolute w-full h-full ${props.isExpanded? 'grid-cols-4': 'grid-cols-3'} gap-2 p-2 hide-scrollbar overflow-auto`}>
       <div className="h-full flex flex-col gap-2 col-span-1">
         {columns[0].map((card, index) => (
-          <div className={`w-full relative h-fit border-[1px] border-[#333333] bg-[#1E1E1E] hover:shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]  flex flex-col gap-2 p-4 rounded-[5px] rounded-br-[0px] rounded-bl-[0px] card-animation transition-all duration-300 group`} key={index}>  
+          <div className={`w-full relative h-fit  gap-2 border-[#333333] bg-[#1E1E1E] hover:shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]  flex flex-col p-4 rounded-[10px] card-animation transition-all duration-300 group`} key={index}>  
             {index*3 === props.hoveredCardIndex ? (<div className='w-full h-full inset-0 absolute border rounded-[5px] rounded-br-[0px] rounded-bl-[0px] shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]'></div>) : (null)} 
             <h3 className="text-[#A0A0A0] text-[25px]">{card.title}</h3>
             <p className="text-[#E0E0E0]">{card.description}</p>
@@ -196,8 +196,8 @@ export default function TaskSpace(props) {
              </button>
             </div>
             {card.isUrgent && card.isImportant ? (
-              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
-                <div className="w-10 h-full bg-[#ff0000] "></div>
+              <div className="w-full h-[9px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className={`w-10 h-full bg-[#ff0000] rounded-[9px] rounded-tl-[0px] ${card.secondsLeft ? 'rounded-tr-[0px]': null}  rounded-br-[0px]`}></div>
                 {card.secondsLeft ? (
                   <ProgressBar
                   createdTime={card.createdAt}
@@ -208,8 +208,8 @@ export default function TaskSpace(props) {
                 ): null}
             </div>
             ) : card.isUrgent ? (
-              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
-                <div className="w-10 h-full bg-[#0000ff] "></div>
+              <div className="w-full h-[9px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className={`w-10 h-full bg-[#0000ff] rounded-[9px] rounded-tl-[0px] ${card.secondsLeft ? 'rounded-tr-[0px]': null}  rounded-br-[0px]`}></div>
                 {card.secondsLeft ? (
                   <ProgressBar
                   createdTime={card.createdAt}
@@ -220,8 +220,8 @@ export default function TaskSpace(props) {
                 ): null}
               </div>
             ) : card.isImportant ? (
-              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
-                <div className="w-10 h-full bg-[#ffff00] "></div>
+              <div className="w-full h-[9px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className={`w-10 h-full bg-[#ffff00] rounded-[9px] rounded-tl-[0px] ${card.secondsLeft ? 'rounded-tr-[0px]': null}  rounded-br-[0px]`}></div>
                 {card.secondsLeft ? (
                   <ProgressBar
                   createdTime={card.createdAt}
@@ -232,8 +232,8 @@ export default function TaskSpace(props) {
                 ): null}
               </div>
             ) : card.isUrgent === false && card.isImportant === false ? (
-              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
-                <div className="w-10 h-full bg-[#808080]"></div>
+              <div className="w-full h-[9px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className={`w-10 h-full bg-[#808080] rounded-[9px] rounded-tl-[0px] ${card.secondsLeft ? 'rounded-tr-[0px]': null}  rounded-br-[0px]`}></div>
                 {card.secondsLeft ? (
                   <ProgressBar
                   createdTime={card.createdAt}
@@ -249,7 +249,7 @@ export default function TaskSpace(props) {
       </div>
       <div className="h-full flex flex-col gap-2 col-span-1">
         {columns[1].map((card, index) => (
-          <div className={`w-full relative h-fit border-[1px] border-[#333333] bg-[#1E1E1E] hover:shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]  flex flex-col gap-2 p-4 rounded-[5px] rounded-br-[0px] rounded-bl-[0px] card-animation transition-all duration-300 group`} key={index}>  
+          <div className={`w-full relative h-fit  border-[#333333] bg-[#1E1E1E] hover:shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]  flex flex-col gap-2 p-4 rounded-[10px] card-animation transition-all duration-300 group`} key={index}>  
           {index*3 + 1 === props.hoveredCardIndex ? (<div className='w-full h-full inset-0 absolute border rounded-[5px] rounded-br-[0px] rounded-bl-[0px] shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]'></div>) : (null)} 
           <h3 className="text-[#A0A0A0]">{card.title}</h3>
           <p className="text-[#E0E0E0]">{card.description}</p>
@@ -354,9 +354,9 @@ export default function TaskSpace(props) {
               )}
              </button>
             </div>
-          {card.isUrgent && card.isImportant ? (
-              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
-                <div className="w-10 h-full bg-[#ff0000] "></div>
+            {card.isUrgent && card.isImportant ? (
+              <div className="w-full h-[9px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className={`w-10 h-full bg-[#ff0000] rounded-[9px] rounded-tl-[0px] ${card.secondsLeft ? 'rounded-tr-[0px]': null}  rounded-br-[0px]`}></div>
                 {card.secondsLeft ? (
                   <ProgressBar
                   createdTime={card.createdAt}
@@ -367,8 +367,8 @@ export default function TaskSpace(props) {
                 ): null}
             </div>
             ) : card.isUrgent ? (
-              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
-                <div className="w-10 h-full bg-[#0000ff] "></div>
+              <div className="w-full h-[9px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className={`w-10 h-full bg-[#0000ff] rounded-[9px] rounded-tl-[0px] ${card.secondsLeft ? 'rounded-tr-[0px]': null}  rounded-br-[0px]`}></div>
                 {card.secondsLeft ? (
                   <ProgressBar
                   createdTime={card.createdAt}
@@ -379,8 +379,8 @@ export default function TaskSpace(props) {
                 ): null}
               </div>
             ) : card.isImportant ? (
-              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
-                <div className="w-10 h-full bg-[#ffff00] "></div>
+              <div className="w-full h-[9px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className={`w-10 h-full bg-[#ffff00] rounded-[9px] rounded-tl-[0px] ${card.secondsLeft ? 'rounded-tr-[0px]': null}  rounded-br-[0px]`}></div>
                 {card.secondsLeft ? (
                   <ProgressBar
                   createdTime={card.createdAt}
@@ -391,8 +391,8 @@ export default function TaskSpace(props) {
                 ): null}
               </div>
             ) : card.isUrgent === false && card.isImportant === false ? (
-              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
-                <div className="w-10 h-full bg-[#808080]"></div>
+              <div className="w-full h-[9px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className={`w-10 h-full bg-[#808080] rounded-[9px] rounded-tl-[0px] ${card.secondsLeft ? 'rounded-tr-[0px]': null}  rounded-br-[0px]`}></div>
                 {card.secondsLeft ? (
                   <ProgressBar
                   createdTime={card.createdAt}
@@ -408,7 +408,7 @@ export default function TaskSpace(props) {
       </div>
       <div className="h-full flex flex-col gap-2 col-span-1">
         {columns[2].map((card, index) => (
-          <div className={`w-full relative z-1 h-fit border-[1px] border-[#333333] bg-[#1E1E1E] hover:shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]  flex flex-col gap-2 p-4 rounded-[5px] rounded-br-[0px] rounded-bl-[0px] card-animation transition-all duration-300 group`} key={index}>  
+          <div className={`w-full relative z-1 h-fit bg-[#1E1E1E] hover:shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]  flex flex-col gap-2 p-4 rounded-[10px] card-animation transition-all duration-300 group`} key={index}>  
           {index*3 + 2 === props.hoveredCardIndex ? (<div className='w-full h-full inset-0 absolute border rounded-[5px] rounded-br-[0px] rounded-bl-[0px] shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]'></div>) : (null)} 
           <h3 className="text-[#A0A0A0]">{card.title}</h3>
           <p className="text-[#E0E0E0]">{card.description}</p>
@@ -513,9 +513,9 @@ export default function TaskSpace(props) {
               )}
              </button>
             </div>
-          {card.isUrgent && card.isImportant ? (
-              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
-                <div className="w-10 h-full bg-[#ff0000] "></div>
+            {card.isUrgent && card.isImportant ? (
+              <div className="w-full h-[9px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className={`w-10 h-full bg-[#ff0000] rounded-[9px] rounded-tl-[0px] ${card.secondsLeft ? 'rounded-tr-[0px]': null}  rounded-br-[0px]`}></div>
                 {card.secondsLeft ? (
                   <ProgressBar
                   createdTime={card.createdAt}
@@ -526,8 +526,8 @@ export default function TaskSpace(props) {
                 ): null}
             </div>
             ) : card.isUrgent ? (
-              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
-                <div className="w-10 h-full bg-[#0000ff] "></div>
+              <div className="w-full h-[9px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className={`w-10 h-full bg-[#0000ff] rounded-[9px] rounded-tl-[0px] ${card.secondsLeft ? 'rounded-tr-[0px]': null}  rounded-br-[0px]`}></div>
                 {card.secondsLeft ? (
                   <ProgressBar
                   createdTime={card.createdAt}
@@ -538,8 +538,8 @@ export default function TaskSpace(props) {
                 ): null}
               </div>
             ) : card.isImportant ? (
-              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
-                <div className="w-10 h-full bg-[#ffff00] "></div>
+              <div className="w-full h-[9px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className={`w-10 h-full bg-[#ffff00] rounded-[9px] rounded-tl-[0px] ${card.secondsLeft ? 'rounded-tr-[0px]': null}  rounded-br-[0px]`}></div>
                 {card.secondsLeft ? (
                   <ProgressBar
                   createdTime={card.createdAt}
@@ -550,8 +550,8 @@ export default function TaskSpace(props) {
                 ): null}
               </div>
             ) : card.isUrgent === false && card.isImportant === false ? (
-              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
-                <div className="w-10 h-full bg-[#808080]"></div>
+              <div className="w-full h-[9px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className={`w-10 h-full bg-[#808080] rounded-[9px] rounded-tl-[0px] ${card.secondsLeft ? 'rounded-tr-[0px]': null}  rounded-br-[0px]`}></div>
                 {card.secondsLeft ? (
                   <ProgressBar
                   createdTime={card.createdAt}
@@ -568,7 +568,7 @@ export default function TaskSpace(props) {
       {props.isExpanded ? (
         <div className="h-full flex flex-col gap-2 col-span-1">
         {columns[3].map((card, index) => (
-          <div className={`w-full relative z-1 h-fit border-[1px] border-[#333333] bg-[#1E1E1E] hover:shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]  flex flex-col gap-2 p-4 rounded-[5px] rounded-br-[0px] rounded-bl-[0px] card-animation transition-all duration-300 group`} key={index}>  
+          <div className={`w-full relative z-1 h-fit border-[#333333] bg-[#1E1E1E] hover:shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]  flex flex-col gap-2 p-4 rounded-[10px] card-animation transition-all duration-300 group`} key={index}>  
           {index*3 + 3 === props.hoveredCardIndex ? (<div className='w-full h-full inset-0 absolute border rounded-[5px] rounded-br-[0px] rounded-bl-[0px] shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]'></div>) : (null)} 
           <h3 className="text-[#A0A0A0]">{card.title}</h3>
           <p className="text-[#E0E0E0]">{card.description}</p>
@@ -673,9 +673,9 @@ export default function TaskSpace(props) {
               )}
              </button>
             </div>
-          {card.isUrgent && card.isImportant ? (
-              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
-                <div className="w-10 h-full bg-[#ff0000] "></div>
+            {card.isUrgent && card.isImportant ? (
+              <div className="w-full h-[9px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className={`w-10 h-full bg-[#ff0000] rounded-[9px] rounded-tl-[0px] ${card.secondsLeft ? 'rounded-tr-[0px]': null}  rounded-br-[0px]`}></div>
                 {card.secondsLeft ? (
                   <ProgressBar
                   createdTime={card.createdAt}
@@ -686,8 +686,8 @@ export default function TaskSpace(props) {
                 ): null}
             </div>
             ) : card.isUrgent ? (
-              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
-                <div className="w-10 h-full bg-[#0000ff] "></div>
+              <div className="w-full h-[9px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className={`w-10 h-full bg-[#0000ff] rounded-[9px] rounded-tl-[0px] ${card.secondsLeft ? 'rounded-tr-[0px]': null}  rounded-br-[0px]`}></div>
                 {card.secondsLeft ? (
                   <ProgressBar
                   createdTime={card.createdAt}
@@ -698,8 +698,8 @@ export default function TaskSpace(props) {
                 ): null}
               </div>
             ) : card.isImportant ? (
-              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
-                <div className="w-10 h-full bg-[#ffff00] "></div>
+              <div className="w-full h-[9px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className={`w-10 h-full bg-[#ffff00] rounded-[9px] rounded-tl-[0px] ${card.secondsLeft ? 'rounded-tr-[0px]': null}  rounded-br-[0px]`}></div>
                 {card.secondsLeft ? (
                   <ProgressBar
                   createdTime={card.createdAt}
@@ -710,8 +710,8 @@ export default function TaskSpace(props) {
                 ): null}
               </div>
             ) : card.isUrgent === false && card.isImportant === false ? (
-              <div className="w-full h-[5px] absolute bottom-[0px] left-[0.1px] flex flex-row">
-                <div className="w-10 h-full bg-[#808080]"></div>
+              <div className="w-full h-[9px] absolute bottom-[0px] left-[0.1px] flex flex-row">
+                <div className={`w-10 h-full bg-[#808080] rounded-[9px] rounded-tl-[0px] ${card.secondsLeft ? 'rounded-tr-[0px]': null}  rounded-br-[0px]`}></div>
                 {card.secondsLeft ? (
                   <ProgressBar
                   createdTime={card.createdAt}

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import { MdWbSunny } from "react-icons/md";
 import { AiFillMoon } from "react-icons/ai";
@@ -49,6 +49,29 @@ function App() {
       setPriority('P4'); // Not Urgent and Not Important -> Very Low Priority
     }
   };
+
+  const handleKeyDown = (event) => {
+    // Check if Ctrl key is held down with Right or Left Arrow
+    if (event.ctrlKey) {
+      if (event.key === 'ArrowRight') {
+        // Ctrl + Right Arrow
+        setIsExpanded(true);
+      } else if (event.key === 'ArrowLeft') {
+        // Ctrl + Left Arrow
+        setIsExpanded(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    // Add event listener on mount
+    document.addEventListener('keydown', handleKeyDown);
+
+    // Cleanup event listener on unmount
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   const extractDateTime = async (inputText) => {
     try {
