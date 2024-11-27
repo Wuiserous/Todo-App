@@ -19,7 +19,6 @@ import { FaRegBell } from "react-icons/fa";
 import { IoIosTimer } from "react-icons/io";
 import DeadLineModal from './components/DeadLineModal';
 import axios from 'axios';
-import { set } from 'mongoose';
 
 
 function App() {
