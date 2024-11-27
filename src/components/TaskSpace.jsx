@@ -7,11 +7,12 @@ import { LuUserPlus } from "react-icons/lu";
 import { IoColorPaletteOutline } from "react-icons/io5";
 import { TbAlarmPlus } from "react-icons/tb";
 import { TbFlagPlus } from "react-icons/tb";
+import { PiFlagPennantFill } from "react-icons/pi";
 
 export default function TaskSpace(props) {
   const [hoveredButton, setHoveredButton] = useState(null);
-  const [visibleDiv, setVisibleDiv] = useState(null); // Tracks the currently visible div
-
+  const [visibleDiv, setVisibleDiv] = useState(null); // Tracks the currently visible div 
+  const [deadlineText, setDeadlineText] = useState('');
   const handleButtonClick = (createdAt, button) => {
     setVisibleDiv((prevState) => {
       // Check if the clicked button matches the current state
@@ -33,6 +34,36 @@ export default function TaskSpace(props) {
   // Assuming `props.cards` is the array of card data from the DB
   const cards = props.cards
 
+  const handleEditCard = (card, field, value) => {
+    // Check if the field exists in the card
+    const updatedCard = card.hasOwnProperty(field)
+        ? { ...card, [field]: value } // Update the existing field
+        : { ...card, [field]: value }; // Add the new field if it doesn't exist
+
+    // Return the updated card by calling the editCard function passed via props
+    return props.editCard(updatedCard);
+};
+
+  const handleDeadlineEdit = async (card, text) => {
+    let updatedCard = { ...card };
+
+    const deadline = await props.extractDate(text)
+    const createdAtDate = new Date(card.createdAt); 
+    const deadLineDate = new Date(deadline); 
+    const secondsLeft = Math.floor((deadLineDate - createdAtDate) / 1000);
+    setDeadlineText('')
+
+    updatedCard = {
+      ...updatedCard,
+      deadLine: deadline,
+      secondsLeft,
+    };
+
+    return props.editCard(updatedCard);
+
+  }
+
+  
 
   const numOfColumns = props.isExpanded ? 4 : 3
 
@@ -90,7 +121,7 @@ export default function TaskSpace(props) {
       <div className={`grid absolute w-full h-full ${props.isExpanded? 'grid-cols-4': 'grid-cols-3'} gap-2 p-2 hide-scrollbar overflow-auto`}>
       <div className="h-full flex flex-col gap-2 col-span-1">
         {columns[0].map((card, index) => (
-          <div className={`w-full relative h-fit  gap-2 border-[#333333] bg-[#1E1E1E] hover:shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]  flex flex-col p-4 rounded-[10px] card-animation transition-all duration-300 group`} key={index}>  
+          <div className={`w-full relative h-fit  gap-2 border-[#333333] ${card.bgColor ? card.bgColor: 'bg-[#1E1E1E]'} hover:shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]  flex flex-col p-4 rounded-[10px] card-animation transition-all duration-300 group`} key={index}>  
             {index*3 === props.hoveredCardIndex ? (<div className='w-full h-full inset-0 absolute border rounded-[5px] rounded-br-[0px] rounded-bl-[0px] shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]'></div>) : (null)} 
             <h3 className="text-[#A0A0A0] text-[25px]">{card.title}</h3>
             <p className="text-[#E0E0E0]">{card.description}</p>
@@ -110,7 +141,9 @@ export default function TaskSpace(props) {
               )}
              </button>
              {visibleDiv?.createdAt === card.createdAt && visibleDiv?.button === 'alarm' && (
-              <div className="absolute p-1 bg-red-500 z-10 bottom-[-20px] left-[-5px]">set alarm</div>
+              <div className="absolute p-1 bg-red-500 z-10 bottom-[-20px] left-[-5px]">
+              set alarm
+              </div>
             )}
              <button 
              className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20"
@@ -127,7 +160,12 @@ export default function TaskSpace(props) {
               )}
              </button>
              {visibleDiv?.createdAt === card.createdAt && visibleDiv?.button === 'priority' && (
-              <div className="absolute p-1 bg-orange-500 z-10 bottom-[-20px] left-[45px]">set priority</div>
+              <div className="absolute p-1 bg-[#1E1E1E] flex gap-2 border rounded border-white/10 z-10 bottom-[-20px] left-[45px]">
+                <button className="w-5 h-5 text-red-500 rounded-full" onClick={() => {handleEditCard(card, 'priority', 'P1'), setVisibleDiv(null)}}><PiFlagPennantFill /></button>
+                <button className="w-5 h-5 text-yellow-500 rounded-full" onClick={() => {handleEditCard(card, 'priority', 'P2'), setVisibleDiv(null)}}><PiFlagPennantFill /></button>
+                <button className="w-5 h-5 text-blue-500 rounded-full" onClick={() => {handleEditCard(card, 'priority', 'P3'), setVisibleDiv(null)}}><PiFlagPennantFill /></button>
+                <button className="w-5 h-5 text-gray-500 rounded-full" onClick={() => {handleEditCard(card, 'priority', 'P4'), setVisibleDiv(null)}}><PiFlagPennantFill /></button>
+              </div>
             )}
              <button 
              className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" 
@@ -144,7 +182,16 @@ export default function TaskSpace(props) {
               )}
              </button>
              {visibleDiv?.createdAt === card.createdAt && visibleDiv?.button === 'color' && (
-              <div className="absolute p-1 bg-pink-500 z-10 bottom-[-20px] left-[75px]">add background color</div>
+              <div className="absolute p-1 bg-[#1E1E1E] flex gap-2 border rounded border-white/10 z-10 bottom-[-20px] left-[75px]">
+                <button className="w-5 h-5 bg-red-500 rounded-full border border-white/50" onClick={() => {handleEditCard(card, 'bgColor', 'bg-red-500'), setVisibleDiv(null)}}></button>
+                <button className="w-5 h-5 bg-yellow-500 rounded-full border border-white/50" onClick={() => {handleEditCard(card, 'bgColor', 'bg-yellow-500'), setVisibleDiv(null)}}></button>
+                <button className="w-5 h-5 bg-blue-500 rounded-full border border-white/50" onClick={() => {handleEditCard(card, 'bgColor', 'bg-blue-500'), setVisibleDiv(null)}}></button>
+                <button className="w-5 h-5 bg-green-500 rounded-full border border-white/50" onClick={() => {handleEditCard(card, 'bgColor', 'bg-green-500'), setVisibleDiv(null)}}></button>
+                <button className="w-5 h-5 bg-purple-500 rounded-full border border-white/50" onClick={() => {handleEditCard(card, 'bgColor', 'bg-purple-500'), setVisibleDiv(null)}}></button>
+                <button className="w-5 h-5 bg-pink-500 rounded-full border border-white/50" onClick={() => {handleEditCard(card, 'bgColor', 'bg-pink-500'), setVisibleDiv(null)}}></button>
+                <button className="w-5 h-5 bg-gray-500 rounded-full border border-white/50" onClick={() => {handleEditCard(card, 'bgColor', 'bg-gray-500'), setVisibleDiv(null)}}></button>
+                <button className="w-5 h-5 bg-[#1E1E1E] rounded-full border border-white/50" onClick={() => {handleEditCard(card, 'bgColor', 'bg-[#1E1E1E]'), setVisibleDiv(null)}}></button>
+              </div>
             )}
              <button 
              className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" 
@@ -178,7 +225,16 @@ export default function TaskSpace(props) {
               )}
              </button>
              {visibleDiv?.createdAt === card.createdAt && visibleDiv?.button === 'deadline' && (
-              <div className="absolute p-1 bg-blue-400 z-10 bottom-[-20px] left-[220px]">add deadline</div>
+              <div className="absolute p-1 bg-blue-400 z-10 bottom-[-20px] left-[220px]">
+                <input 
+                name={deadlineText}
+                className='text-black bg-white rounded'
+                type="text"
+                value={deadlineText}
+                onChange={(e) => setDeadlineText(e.target.value)}
+                  />
+                  <button onClick={() => {handleDeadlineEdit(card, deadlineText), setVisibleDiv(null)}} className='w-full bg-blue-500 rounded focus:outline-none'>Set</button>
+              </div>
             )}
              <button 
              className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20" 
@@ -195,7 +251,7 @@ export default function TaskSpace(props) {
               )}
              </button>
             </div>
-            {card.isUrgent && card.isImportant ? (
+            {card.priority == 'P1' ? (
               <div className="w-full h-[9px] absolute bottom-[0px] left-[0.1px] flex flex-row">
                 <div className={`w-10 h-full bg-[#ff0000] rounded-[9px] rounded-tl-[0px] ${card.secondsLeft ? 'rounded-tr-[0px]': null}  rounded-br-[0px]`}></div>
                 {card.secondsLeft ? (
@@ -207,7 +263,7 @@ export default function TaskSpace(props) {
                 />
                 ): null}
             </div>
-            ) : card.isUrgent ? (
+            ) : card.priority == 'P3' ? (
               <div className="w-full h-[9px] absolute bottom-[0px] left-[0.1px] flex flex-row">
                 <div className={`w-10 h-full bg-[#0000ff] rounded-[9px] rounded-tl-[0px] ${card.secondsLeft ? 'rounded-tr-[0px]': null}  rounded-br-[0px]`}></div>
                 {card.secondsLeft ? (
@@ -219,7 +275,7 @@ export default function TaskSpace(props) {
                 />
                 ): null}
               </div>
-            ) : card.isImportant ? (
+            ) : card.priority == 'P2' ? (
               <div className="w-full h-[9px] absolute bottom-[0px] left-[0.1px] flex flex-row">
                 <div className={`w-10 h-full bg-[#ffff00] rounded-[9px] rounded-tl-[0px] ${card.secondsLeft ? 'rounded-tr-[0px]': null}  rounded-br-[0px]`}></div>
                 {card.secondsLeft ? (
@@ -231,7 +287,7 @@ export default function TaskSpace(props) {
                 />
                 ): null}
               </div>
-            ) : card.isUrgent === false && card.isImportant === false ? (
+            ) : card.priority == 'P4' || card.priority == '' ? (
               <div className="w-full h-[9px] absolute bottom-[0px] left-[0.1px] flex flex-row">
                 <div className={`w-10 h-full bg-[#808080] rounded-[9px] rounded-tl-[0px] ${card.secondsLeft ? 'rounded-tr-[0px]': null}  rounded-br-[0px]`}></div>
                 {card.secondsLeft ? (

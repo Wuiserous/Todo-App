@@ -19,6 +19,7 @@ import { FaRegBell } from "react-icons/fa";
 import { IoIosTimer } from "react-icons/io";
 import DeadLineModal from './components/DeadLineModal';
 import axios from 'axios';
+import { set } from 'mongoose';
 
 
 function App() {
@@ -83,6 +84,7 @@ function App() {
       setDeadLineTime(time);
       setDeadLine(deadline);
       console.log(`Date: ${date}, Time: ${time}, Deadline: ${deadline}`)
+      return deadline
     } catch (error) {
       console.error('Error extracting date/time:', error.response?.data || error.message);
     }
@@ -115,9 +117,21 @@ function App() {
     console.log(card)
   }
 
+  const editCard = (newCard) => {
+    setCards(cards.map((card) => {
+      if (card.createdAt === newCard.createdAt) {
+        // Replace the card with the new card
+        console.log(newCard)
+        return newCard;
+      }
+      return card;
+    }));
+  };
+  
+
   function handleSubmit(e) {
     e.preventDefault();
-  
+
     const createdAt = new Date().toISOString(); // Current time in ISO format
   
     // Calculate seconds remaining
@@ -139,6 +153,8 @@ function App() {
       createdAt,
       secondsLeft // Add the calculated value to the card
     };
+
+    console.log(newCard)
   
     // Reset fields and update state
     setTitle('');
@@ -194,7 +210,7 @@ function App() {
               </button>} 
               bgColor={darkMode ? 'bg-slate-300' : 'bg-[#121212]'} />
       
-      <TaskSpace deleteCard={deleteCard} cards={cards} bgColor={darkMode ? 'bg-slate-300' : 'bg-[#121212]'} hoveredCardIndex={hoveredCardIndex} isExpanded={isExpanded} expandButton={<button className="absolute right-[-12px] transform duration-300 group-hover:right-[-2px] h-20 w-5 bg-white/5 backdrop-blur-[1px] border border-white/10  p-1 rounded rounded-tr-[1px] rounded-br-[0px]" onClick={() => setIsExpanded(!isExpanded)}>{ isExpanded ? <FaAngleLeft /> : <FaAngleRight />}</button>} />
+      <TaskSpace deleteCard={deleteCard} extractDate={extractDateTime} editCard={editCard} cards={cards} bgColor={darkMode ? 'bg-slate-300' : 'bg-[#121212]'} hoveredCardIndex={hoveredCardIndex} isExpanded={isExpanded} expandButton={<button className="absolute right-[-12px] transform duration-300 group-hover:right-[-2px] h-20 w-5 bg-white/5 backdrop-blur-[1px] border border-white/10  p-1 rounded rounded-tr-[1px] rounded-br-[0px]" onClick={() => setIsExpanded(!isExpanded)}>{ isExpanded ? <FaAngleLeft /> : <FaAngleRight />}</button>} />
       <ProgressSpace bgColor={darkMode ? 'bg-slate-300' : 'bg-[#121212]'} />
       <MotivationSpace bgColor={darkMode ? 'bg-slate-300' : 'bg-[#121212]'} />
 
