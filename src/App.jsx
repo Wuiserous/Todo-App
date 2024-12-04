@@ -18,12 +18,15 @@ import { TbUrgent } from "react-icons/tb";
 import { FaRegBell } from "react-icons/fa";
 import { IoIosTimer } from "react-icons/io";
 import DeadLineModal from './components/DeadLineModal';
+import EditModal from './components/EditModal';
+import { PiKanbanFill } from "react-icons/pi";
 import axios from 'axios';
 
 
 function App() {
   const [darkMode, setDarkMode] = useState(false)
   const [showModal, setShowModal] = useState(false)
+  const [showEditModal, setShowEditModal] = useState(false)
   const [showLinkModal, setShowLinkModal] = useState(false)
   const [showDeadLineModal, setShowDeadLineModal] = useState(false)
   const [title, setTitle] = useState('')
@@ -37,6 +40,7 @@ function App() {
   const [deadLineTime, setDeadLineTime] = useState('');
   const [deadLine, setDeadLine] = useState('');
   const [priority, setPriority] = useState('');
+  const [cardEdit, setCardEdit] = useState('');
 
   const setTaskPriority = (isUrgent, isImportant) => {
     if (isUrgent && isImportant) {
@@ -127,6 +131,17 @@ function App() {
     }));
     setDeadLine('')
   };
+
+  const handleInputChange = (e, field) => {
+    const { value } = e.target;
+    
+    // Update the card that matches cardEdit (createdAt)
+    setCards(prevCards =>
+      prevCards.map((card) => 
+        card.createdAt === cardEdit ? { ...card, [field]: value } : card
+      )
+    );
+  };
   
 
   function handleSubmit(e) {
@@ -141,35 +156,38 @@ function App() {
     console.log(secondsLeft)
   
     // Create a new card with the calculated secondsLeft
-    const newCard = {
-      title,
-      description,
-      isUrgent,
-      isImportant,
-      deadLineDate,
-      deadLineTime,
-      deadLine,
-      priority,
-      createdAt,
-      secondsLeft // Add the calculated value to the card
-    };
-
-    console.log(newCard)
+    if (title.length > 0 && description.length > 0) {
+      const newCard = {
+        type: 'task',
+        title,
+        description,
+        isUrgent,
+        isImportant,
+        deadLineDate,
+        deadLineTime,
+        deadLine,
+        priority,
+        createdAt,
+        secondsLeft // Add the calculated value to the card
+      };
   
-    // Reset fields and update state
-    setTitle('');
-    setDescription('');
-    setDeadLineText('');
-    setDeadLineDate('');
-    setDeadLineTime('');
-    addCard(newCard);
-  
-    // Reset the priority states after adding the card
-    setIsUrgent(false);
-    setIsImportant(false);
-    setPriority('');
-    setDeadLine('');
-    hideModal();
+      console.log(newCard)
+    
+      // Reset fields and update state
+      setTitle('');
+      setDescription('');
+      setDeadLineText('');
+      setDeadLineDate('');
+      setDeadLineTime('');
+      addCard(newCard);
+    
+      // Reset the priority states after adding the card
+      setIsUrgent(false);
+      setIsImportant(false);
+      setPriority('');
+      setDeadLine('');
+      hideModal();
+    }
   }
   
 
@@ -183,6 +201,20 @@ function App() {
     if (!showLinkModal) {
       setShowModal(false);
     }
+  }
+
+  const handleShowModal = () => {
+    setShowModal(true);
+  }
+
+  const handleShowEditModal = (createdAt) => {
+    setShowEditModal(true);
+    setCardEdit(createdAt);
+    console.log(`cardEdit added: ${createdAt}`)
+  }
+  const hideEditModal = () => {
+    setShowEditModal(false);
+    setCardEdit('')
   }
 
   const hideLinkModal = () => {
@@ -201,19 +233,42 @@ function App() {
     <div className={`w-[100vw] overflow-hidden p-2 gap-2 h-[100vh] grid grid-cols-[50px_1100px_60px_1fr] grid-rows-[50px_1fr_1fr_1fr]`}>
       <ToolBar bgColor={darkMode ? 'bg-slate-300' : 'bg-[#121212]'} 
                Button={<button className="w-10 focus:outline-none h-10 rounded-full flex items-center justify-center" 
-               onClick={() => setShowModal(true)}>
+               onClick={handleShowModal}>
                 <IoMdAddCircle className={`${darkMode ? 'text-black' : 'text-[#BB86FC]'}`} size={40} />
-               </button>} />
+               </button>} Kanban={<button className="w-10 focus:outline-none h-10 rounded-full flex items-center justify-center" 
+               onClick={() => setShowKanban(true)}>
+                <PiKanbanFill className={`${darkMode ? 'text-black' : 'text-[#BB86FC]'}`} size={30} />
+               </button>}/>
       <NavBar Button={<button className="w-10 h-10 focus:outline-none rounded-full flex items-center justify-center" 
               onClick={() => setDarkMode(!darkMode)}>
               {darkMode ? <AiFillMoon className='text-black' size={25} /> : <MdWbSunny size={25} />}
               </button>} 
               bgColor={darkMode ? 'bg-slate-300' : 'bg-[#121212]'} />
       
-      <TaskSpace deleteCard={deleteCard} extractDate={extractDateTime} editCard={editCard} cards={cards} bgColor={darkMode ? 'bg-slate-300' : 'bg-[#121212]'} hoveredCardIndex={hoveredCardIndex} isExpanded={isExpanded} expandButton={<button className="absolute right-[-12px] transform duration-300 group-hover:right-[-2px] h-20 w-5 bg-white/5 backdrop-blur-[1px] border border-white/10  p-1 rounded rounded-tr-[1px] rounded-br-[0px]" onClick={() => setIsExpanded(!isExpanded)}>{ isExpanded ? <FaAngleLeft /> : <FaAngleRight />}</button>} />
+      <TaskSpace addTask={handleShowModal} taskModal={handleShowEditModal} deleteCard={deleteCard} extractDate={extractDateTime} editCard={editCard} cards={cards} bgColor={darkMode ? 'bg-slate-300' : 'bg-[#121212]'} hoveredCardIndex={hoveredCardIndex} isExpanded={isExpanded} expandButton={<button className="absolute right-[-12px] transform duration-300 group-hover:right-[-2px] h-20 w-5 bg-white/5 backdrop-blur-[1px] border border-white/10  p-1 rounded rounded-tr-[1px] rounded-br-[0px]" onClick={() => setIsExpanded(!isExpanded)}>{ isExpanded ? <FaAngleLeft /> : <FaAngleRight />}</button>} />
       <ProgressSpace bgColor={darkMode ? 'bg-slate-300' : 'bg-[#121212]'} />
       <MotivationSpace bgColor={darkMode ? 'bg-slate-300' : 'bg-[#121212]'} />
+      <EditModal Show={showEditModal} hide={hideEditModal} bgColor={darkMode ? 'bg-slate-300' : 'bg-[#1E1E1E]'}>
+      {cards.map((card, index) => (
+  // Check if the card's createdAt matches the cardEdit value
+  card.createdAt === cardEdit ? (
+    <div key={index} className={`w-fit h-[200px]  gap-2 border-[#333333] ${card.bgColor ? card.bgColor: 'bg-[#1E1E1E]'} hover:shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]  flex flex-col p-4 rounded-[10px] group`}>
+      <input
+        type="text"
+        value={card.title} // Use the current card's title
+        onChange={(e) => handleInputChange(e, 'title')} // Update specific card by index
+        className="text-white/70 w-fit text-[30px] bg-transparent border-none outline-none"
+      />
+      <textarea
+        value={card.description} // Use the current card's description
+        onChange={(e) => handleInputChange(e, 'description')} // Update specific card by index
+        className="text-white h-auto resize-none text-lg bg-transparent border-none outline-none"
+      />
+    </div>
+  ) : null // If card doesn't match, render nothing
+))}
 
+      </EditModal>
       <Modal Show={showModal && !showLinkModal} hide={hideModal} bgColor={darkMode ? 'bg-slate-300' : 'bg-[#1E1E1E]'}>
         <AddTodo Button={<button onClick={() => setShowLinkModal(true)} className="rounded border-none bg-white focus:outline-none bg-black p-2">
                           <IoLink className="text-black" size={25} />

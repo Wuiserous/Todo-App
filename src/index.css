@@ -57,6 +57,13 @@ h3 {
   transition: all 0.3s ease-in-out;
 }
 
+.custom-dashed-border {
+  border: 1px dashed transparent; /* Add the border thickness and dash style */
+  border-image: linear-gradient(to right, white, white) 1; /* Control the gap */
+  border-image-slice: 1; /* Adjust slice if needed */
+}
+
+
 
 button:hover {
   border-color: none;
@@ -79,10 +86,100 @@ button:focus-visible {
   }
 }
 
-.card-animation {
-  animation: fadeInScale 0.4s ease;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+@keyframes editCardAnimation {
+  0% {
+    transform: scale(0.5); /* Start smaller */
+    opacity: 0; /* Start invisible */
+  }
+  20% {
+    transform: scale(0.8); /* Grows a bit */
+    opacity: 0.3; /* Slight visibility */
+  }
+  40% {
+    transform: scale(1.05); /* Getting closer to final size */
+    opacity: 0.6; /* More visible */
+  }
+  60% {
+    transform: scale(1.1); /* Slight overshoot (bounce effect) */
+    opacity: 1; /* Fully visible */
+  }
+  80% {
+    transform: scale(1.05); /* Slight shrink back */
+  }
+  100% {
+    transform: scale(1); /* Set to original size */
+  }
 }
+
+.edit-card-animation {
+  animation: editCardAnimation 0.5s ease-out; /* Apply the animation */
+}
+
+textarea {
+  scrollbar-width: none;  /* For Firefox */
+  -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+}
+
+textarea::-webkit-scrollbar {
+  display: none;  /* For Chrome, Safari, and Opera */
+}
+
+
+
+.card-animation {
+  animation: jumpAndStick 0.5s ease-out;
+  transition: transform 1s ease, opacity 1s ease;
+}
+
+@keyframes jumpAndStick {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  30% {
+    transform: translateY(-20px) scale(1.1); /* Jump up and scale slightly */
+  }
+  50% {
+    transform: translateY(10px) scale(0.95); /* Slight bounce downward */
+  }
+  70% {
+    transform: translateY(-5px) scale(1.02); /* Small bounce up */
+  }
+  100% {
+    transform: translateY(0) scale(1); /* Stick to final position */
+  }
+}
+
+@keyframes slideRight {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100px);
+  }
+}
+
+.soft-translate-right {
+  animation: slideRight 1s ease forwards;
+}
+.soft-translate-left {
+  animation: slideLeft 1s ease forwards;
+}
+
+@keyframes slideLeft {
+  0% {
+    transform: translateX(-100px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}
+
+.expandable-grid {
+  display: grid;
+  transition: grid-template-columns 1s ease-in-out;
+}
+
+
 
 
 @keyframes fadeInScale {

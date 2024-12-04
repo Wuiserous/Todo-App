@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-
-export default function Modal(props) {
+export default function EditModal(props) {
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
@@ -26,16 +25,10 @@ export default function Modal(props) {
         onClick={hide}
       >
         <div
-          className={`w-[500px] h-fit ${props.bgColor} rounded-[10px] transform transition-all duration-300 p-2 ${
+          className={`w-[350px] h-fit ${props.bgColor} rounded-[10px] transform transition-all edit-card-animation duration-300 ${
             isVisible ? "scale-100 opacity-100" : "scale-50 opacity-0"
           }`}
         >
-          <button
-            onClick={props.hide}
-            className="absolute z-1 top-2 right-2 w-5 h-5 p-2 flex items-center justify-center rounded-full focus:outline-none bg-transparent text-white"
-          >
-            x
-          </button>
           {props.children}
         </div>
       </div>
