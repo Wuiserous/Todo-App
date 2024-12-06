@@ -1,14 +1,12 @@
 import { useState } from "react";
-import { MdOutlineDelete } from "react-icons/md";
-import ProgressBar from './ProgressBar';
-import { MdOutlineMoreTime } from "react-icons/md";
-import { LuUserPlus } from "react-icons/lu";
-import { IoColorPaletteOutline } from "react-icons/io5";
-import { TbAlarmPlus } from "react-icons/tb";
-import { TbFlagPlus } from "react-icons/tb";
-import { PiFlagPennantFill } from "react-icons/pi";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoIosAddCircleOutline } from "react-icons/io";
+import { IoColorPaletteOutline } from "react-icons/io5";
+import { LuUserPlus } from "react-icons/lu";
+import { MdOutlineDelete, MdOutlineMoreTime } from "react-icons/md";
+import { PiFlagPennantFill } from "react-icons/pi";
+import { TbAlarmPlus, TbFlagPlus } from "react-icons/tb";
+import ProgressBar from './ProgressBar';
 
 export default function Column({card, index, EditCard, ExtractDate, DeleteCard, handleModal, addTask}) {
     const [hoveredButton, setHoveredButton] = useState(null);
@@ -71,9 +69,9 @@ export default function Column({card, index, EditCard, ExtractDate, DeleteCard, 
     return (
         <>
           {card.type === 'task' 
-            ?<div className={`w-full relative h-fit  gap-2 border-[#333333] ${card.bgColor ? card.bgColor: 'bg-[#1E1E1E]'} hover:shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]  flex flex-col p-4 rounded-[10px] card-animation group`} key={index}>  
-            <h3 onClick={() => handleModal(card.createdAt)} className="text-white/70 text-[25px]">{card.title}</h3>
-            <p onClick={() => handleModal(card.createdAt)} className="text-white">{card.description}</p>
+            ?<div className={`w-full relative h-fit   border-[#333333] ${card.bgColor ? card.bgColor: 'bg-[#1E1E1E]'} hover:shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]  flex flex-col p-4 rounded-[10px] card-animation group`} key={index}>  
+            <h3 onClick={() => handleModal(card.createdAt)} className="text-white/70 cursor-pointer min-h-[5px] text-[25px]">{card.title}</h3>
+            <p onClick={() => handleModal(card.createdAt)} className="text-white cursor-pointer min-h-[5px]">{card.description}</p>
             <div className="w-full h-fit flex flex-row justify-between">
              <button 
              className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20"
@@ -262,7 +260,7 @@ export default function Column({card, index, EditCard, ExtractDate, DeleteCard, 
               </div>
           ) : null }
           </div>
-          : <button onClick={() => addTask()} className="relative border-[2px] border-dashed opacity-0 hover:opacity-100 flex justify-center items-center z-10 border-white/20 w-full h-[77px] rounded-[10px] text-4xl text-white/20" key={index}><IoIosAddCircleOutline /></button>
+          : <button onClick={() => addTask()} className="relative border-[2px] border-dashed opacity-0 hover:opacity-100 flex justify-center items-center z-10 border-white/20 w-full h-[125px] rounded-[10px] text-4xl text-white/20" key={index}><IoIosAddCircleOutline /></button>
 }
         </>
     )

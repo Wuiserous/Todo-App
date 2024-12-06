@@ -1,5 +1,5 @@
 import { BiLogoBaidu } from "react-icons/bi";
-import { motion } from "framer-motion";
+import { IoIosAddCircleOutline } from "react-icons/io";
 import Column from './column';
 
 export default function TaskSpace(props) {
@@ -55,6 +55,7 @@ export default function TaskSpace(props) {
   if (cards.length == 0) return (
   <div className={`rounded-xl relative gap-2 p-2 hide-scrollbar ${props.isExpanded? 'col-span-3': 'col-span-1'} overflow-auto col-start-2 row-start-2 row-end-5 ${props.bgColor}`}>
     <div className="absolute w-[25px] h-20 top-[40%] right-0 overflow-auto group hide-scrollbar z-10 flex justify-center items-center">{props.expandButton}</div>
+    <button onClick={() => props.addTask()} className="absolute border-[2px] border-dashed flex justify-center items-center z-10 border-white/20 hover:border-white/50 group w-60 h-[125px] rounded-[10px] text-4xl text-white/20 hover:text-white/50"><IoIosAddCircleOutline /></button>
       <div className="h-full flex flex-col gap-2 col-span-1 flex flex-col justify-center items-center">
         <BiLogoBaidu size={195} className="text-[#A0A0A0] text-opacity-10" />
         <h1 className="text-[#A0A0A0] text-opacity-10">No tasks added yet</h1>

@@ -21,6 +21,8 @@ import DeadLineModal from './components/DeadLineModal';
 import EditModal from './components/EditModal';
 import { PiKanbanFill } from "react-icons/pi";
 import axios from 'axios';
+import React, { useRef } from "react";
+import AddTextArea from './components/TextArea';
 
 
 function App() {
@@ -53,6 +55,7 @@ function App() {
       setPriority('P4'); // Not Urgent and Not Important -> Very Low Priority
     }
   };
+  
 
   const handleKeyDown = (event) => {
     // Check if Ctrl key is held down with Right or Left Arrow
@@ -145,7 +148,9 @@ function App() {
   
 
   function handleSubmit(e) {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+  }
 
     const createdAt = new Date().toISOString(); // Current time in ISO format
   
@@ -156,7 +161,7 @@ function App() {
     console.log(secondsLeft)
   
     // Create a new card with the calculated secondsLeft
-    if (title.length > 0 && description.length > 0) {
+    if (title.length > 0 || description.length > 0) {
       const newCard = {
         type: 'task',
         title,
@@ -198,9 +203,7 @@ function App() {
 
   const hideModal = () => {
     // Hide modal only if link modal is not shown
-    if (!showLinkModal) {
-      setShowModal(false);
-    }
+    setShowModal(false);
   }
 
   const handleShowModal = () => {
@@ -252,44 +255,37 @@ function App() {
       {cards.map((card, index) => (
   // Check if the card's createdAt matches the cardEdit value
   card.createdAt === cardEdit ? (
-    <div key={index} className={`w-fit h-[200px]  gap-2 border-[#333333] ${card.bgColor ? card.bgColor: 'bg-[#1E1E1E]'} hover:shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]  flex flex-col p-4 rounded-[10px] group`}>
+    <div key={index} className={`w-fit   gap-2 border-[#333333] ${card.bgColor ? card.bgColor: 'bg-[#1E1E1E]'} shadow-[0_0_15px_5px_rgba(187,134,252,0.5)] edit-card-animation  flex flex-col p-4 rounded-[10px] group`}>
       <input
         type="text"
+        placeholder="Title here..."
         value={card.title} // Use the current card's title
         onChange={(e) => handleInputChange(e, 'title')} // Update specific card by index
         className="text-white/70 w-fit text-[30px] bg-transparent border-none outline-none"
       />
-      <textarea
-        value={card.description} // Use the current card's description
-        onChange={(e) => handleInputChange(e, 'description')} // Update specific card by index
-        className="text-white h-auto resize-none text-lg bg-transparent border-none outline-none"
-      />
+      <AddTextArea value={card.description} onChange={(e) => handleInputChange(e, 'description')} placeholder="Description here..." />
     </div>
   ) : null // If card doesn't match, render nothing
 ))}
 
       </EditModal>
-      <Modal Show={showModal && !showLinkModal} hide={hideModal} bgColor={darkMode ? 'bg-slate-300' : 'bg-[#1E1E1E]'}>
-        <AddTodo Button={<button onClick={() => setShowLinkModal(true)} className="rounded border-none bg-white focus:outline-none bg-black p-2">
-                          <IoLink className="text-black" size={25} />
-                        </button>}
+      <Modal Show={showModal && !showLinkModal} hide={hideModal} handleSubmit={handleSubmit} bgColor={darkMode ? 'bg-slate-300' : 'bg-[#1E1E1E]'}>
+        <AddTodo
                  titleInput={<input type="text" value={title} name="title" placeholder="Title here..." 
                           onChange={(e) => setTitle(e.target.value)}
-                          className=" text-black p-2 bg-transparent focus:outline-none w-full" />}
-                 descriptionInput={<textarea name="description" value={description} placeholder="Task here..." 
-                          onChange={(e) => setDescription(e.target.value)}
-                          className="rounded-lg rounded-br-[0px] text-black resize-none overflow-auto p-2 focus:outline-none bg-transparent col-start-1 col-span-10 row-start-2 row-span-10"></textarea>}
-                 submitButton={<button className="col-start-1 col-span-7 row-start-12 row-end-13 hover:bg-blue-700 bg-blue-500 p-2 rounded-lg rounded-br-[0px]" 
-                          onClick={handleSubmit}>Add</button>}
-                 urgentButton={<button className={`rounded-lg rounded-br-[0px] border-none focus:outline-none col-start-9 col-span-1 row-start-12 row-end-13 p-2 
+                          className="text-white p-2 bg-transparent focus:outline-none w-full" />}
+                 descriptionInput={
+                          <AddTextArea onChange={(e) => setDescription(e.target.value)} value={description} placeholder="Description here..." />
+                          }
+                 urgentButton={<button className={`rounded-lg rounded-br-[0px] border-none focus:outline-none p-2 
                   ${isUrgent ? 'bg-red-500' : 'bg-white'}`} onClick={toggleUrgent}>
                           <TbUrgent className="text-black" size={25} />
                           </button>}
-                 importantButton={<button className={`rounded-lg rounded-br-[0px] border-none focus:outline-none col-start-10 col-span-1 row-start-12 row-end-13 p-2 
+                 importantButton={<button className={`rounded-lg rounded-br-[0px] border-none focus:outline-none p-2 
                   ${isImportant ? 'bg-yellow-400' : 'bg-white'}`} onClick={toggleImportant}>
                  <FaRegBell className="text-black" size={25} />
              </button>}
-             taskDeadLineButton={<button className="col-start-8 col-span-1 row-start-12 row-end-13 bg-white p-2 rounded-lg rounded-br-[0px]" onClick={() => setShowDeadLineModal(true)}>
+             taskDeadLineButton={<button className=" bg-white p-2 rounded-lg rounded-br-[0px]" onClick={() => setShowDeadLineModal(true)}>
              <IoIosTimer className="text-black" size={25} />
          </button>}
          toDoDeadLineButton={<button className=" bg-white p-2 rounded" onClick={() => setShowDeadLineModal(true)}>

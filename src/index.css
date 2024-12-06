@@ -127,8 +127,8 @@ textarea::-webkit-scrollbar {
 
 
 .card-animation {
-  animation: jumpAndStick 0.5s ease-out;
-  transition: transform 1s ease, opacity 1s ease;
+  animation: jumpAndStick 0.7s ease-out;
+  transition: transform 0.5s ease, opacity 0.4s ease;
 }
 
 @keyframes jumpAndStick {

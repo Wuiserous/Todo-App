@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 export default function EditModal(props) {
     const [isVisible, setIsVisible] = useState(false);
 
@@ -24,13 +24,9 @@ export default function EditModal(props) {
         id="wrapper"
         onClick={hide}
       >
-        <div
-          className={`w-[350px] h-fit ${props.bgColor} rounded-[10px] transform transition-all edit-card-animation duration-300 ${
-            isVisible ? "scale-100 opacity-100" : "scale-50 opacity-0"
-          }`}
-        >
-          {props.children}
-        </div>
+       
+        {props.children}
+
       </div>
     );
 }
