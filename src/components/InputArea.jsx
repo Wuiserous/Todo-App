@@ -1,15 +1,15 @@
 import React, { useEffect, useRef } from "react";
 
 export default function AddTextArea({ value, onChange, placeholder }) {
-  const textareaRef = useRef(null);
+  const inputRef = useRef(null);
 
   const handleInput = () => {
-    const textarea = textareaRef.current;
-    if (textarea) {
+    const input = inputRef.current;
+    if (input) {
       // Reset height to auto to calculate the new content height
-      textarea.style.height = "auto";
+      input.style.height = "auto";
       // Set height to match the content
-      textarea.style.height = `${textarea.scrollHeight}px`;
+      input.style.height = `${input.scrollHeight}px`;
     }
   };
 
@@ -19,21 +19,24 @@ export default function AddTextArea({ value, onChange, placeholder }) {
   }, [value]); // Re-run if the `value` prop changes
   
   return (
-    <textarea
-      ref={textareaRef}
+    <input
+      ref={inputRef}
       onChange={onChange}
       value={value}
       onInput={handleInput}
       placeholder={placeholder}
       style={{
         width: "100%",
+        fontSize: "1.8rem",
+        color: "white",
         resize: "none",
         overflow: "hidden",
         padding: "0",
         border: "none",
         outline: "none",
         background: "transparent",
+        maxWidth: "100%",
       }}
-    ></textarea>
+    ></input>
   );
 }

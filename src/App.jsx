@@ -21,8 +21,9 @@ import DeadLineModal from './components/DeadLineModal';
 import EditModal from './components/EditModal';
 import { PiKanbanFill } from "react-icons/pi";
 import axios from 'axios';
-import React, { useRef } from "react";
+import React from "react";
 import AddTextArea from './components/TextArea';
+import InputArea from './components/InputArea';
 
 
 function App() {
@@ -152,6 +153,11 @@ function App() {
       e.preventDefault();
   }
 
+  if (description.length > 0){
+    extractDateTime(description)
+    print(description)
+  }
+
     const createdAt = new Date().toISOString(); // Current time in ISO format
   
     // Calculate seconds remaining
@@ -255,14 +261,8 @@ function App() {
       {cards.map((card, index) => (
   // Check if the card's createdAt matches the cardEdit value
   card.createdAt === cardEdit ? (
-    <div key={index} className={`w-fit   gap-2 border-[#333333] ${card.bgColor ? card.bgColor: 'bg-[#1E1E1E]'} shadow-[0_0_15px_5px_rgba(187,134,252,0.5)] edit-card-animation  flex flex-col p-4 rounded-[10px] group`}>
-      <input
-        type="text"
-        placeholder="Title here..."
-        value={card.title} // Use the current card's title
-        onChange={(e) => handleInputChange(e, 'title')} // Update specific card by index
-        className="text-white/70 w-fit text-[30px] bg-transparent border-none outline-none"
-      />
+    <div key={index} className={`w-fit  gap-2 border-[#333333] ${card.bgColor ? card.bgColor: 'bg-[#1E1E1E]'}  edit-card-animation  flex flex-col p-4 rounded-[10px] group`}>
+      <InputArea value={card.title} onChange={(e) => handleInputChange(e, 'title')} placeholder="Title here..." />
       <AddTextArea value={card.description} onChange={(e) => handleInputChange(e, 'description')} placeholder="Description here..." />
     </div>
   ) : null // If card doesn't match, render nothing
@@ -271,11 +271,11 @@ function App() {
       </EditModal>
       <Modal Show={showModal && !showLinkModal} hide={hideModal} handleSubmit={handleSubmit} bgColor={darkMode ? 'bg-slate-300' : 'bg-[#1E1E1E]'}>
         <AddTodo
-                 titleInput={<input type="text" value={title} name="title" placeholder="Title here..." 
+                 titleInput={<InputArea type="text" value={title} name="title" placeholder="Title here..." 
                           onChange={(e) => setTitle(e.target.value)}
-                          className="text-white p-2 bg-transparent focus:outline-none w-full" />}
+                          className="text-white font-sans p-2 bg-transparent focus:outline-none w-full" />}
                  descriptionInput={
-                          <AddTextArea onChange={(e) => setDescription(e.target.value)} value={description} placeholder="Description here..." />
+                          <AddTextArea onChange={(e) => setDescription(e.target.value)} className="font-sans" value={description} placeholder="Description here..." />
                           }
                  urgentButton={<button className={`rounded-lg rounded-br-[0px] border-none focus:outline-none p-2 
                   ${isUrgent ? 'bg-red-500' : 'bg-white'}`} onClick={toggleUrgent}>

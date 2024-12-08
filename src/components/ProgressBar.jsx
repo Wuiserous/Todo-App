@@ -12,38 +12,38 @@ export default function ProgressBar(props) {
   useEffect(() => {
     const interval = setInterval(() => {
       const currentTime = new Date();
-  
+
       // Parse props.createdTime (ISO format) into a Date object
       const createdTime = new Date(props.createdTime);
-  
+
       // Parse props.deadLine (ISO format) into a Date object
       const deadline = new Date(props.deadLine);
-  
+
       // Calculate total time and time passed in milliseconds
       const totalTime = deadline.getTime() - createdTime.getTime();
       const timePassed = currentTime.getTime() - createdTime.getTime();
-  
+
       // Calculate the progress percentage
       const newProgress = Math.min((timePassed / totalTime) * 100, 100); // Clamp progress to 100%
       setProgress(newProgress);
-  
+
       // Handle red transition for progress from 91-100%
       if (newProgress >= 91 && newProgress < 100 && !isRed) {
         setIsRed(true); // Turn red when progress is between 91-99%
       } else if (newProgress === 100 && isRed) {
         setIsRed(false); // After hitting 100%, turn blue
       }
-  
+
       // Calculate time left
       const remainingTime = deadline.getTime() - currentTime.getTime();
-  
+
       if (remainingTime <= 0) {
         setTimeLeft("0 minutes"); // No time left
       } else {
         const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
         const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
-  
+
         if (days > 0) {
           setTimeLeft(`${days} day${days > 1 ? "s" : ""} left`);
         } else if (hours > 0) {
@@ -53,10 +53,10 @@ export default function ProgressBar(props) {
         }
       }
     }, 1000); // Update every second
-  
+
     return () => clearInterval(interval); // Cleanup on component unmount
   }, [props.createdTime, props.deadLine, isRed]);
-  
+
 
   // Dynamically determine the color based on progress
   const getColor = () => {
@@ -76,7 +76,7 @@ export default function ProgressBar(props) {
     }
     return '0px'; // No rounding when progress is less than 97%
   };
-  
+
 
   return (
     <div style={{ width: '100%', display: "flex", flexDirection: "column" }}>

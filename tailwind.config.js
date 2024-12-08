@@ -18,7 +18,9 @@ export default {
       transitionProperty: {
         'grid-cols': 'grid-template-columns', // if you're animating grid columns
       },
-      
+      fontFamily: {
+        sans: ['Poppins', 'sans-serif'], // Set Roboto as the primary font
+      },
     },
   },
   plugins: [],
