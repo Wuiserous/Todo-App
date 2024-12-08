@@ -91,7 +91,6 @@ function App() {
       setDeadLineTime(time);
       setDeadLine(deadline);
       console.log(`Date: ${date}, Time: ${time}, Deadline: ${deadline}`)
-      return deadline
     } catch (error) {
       console.error('Error extracting date/time:', error.response?.data || error.message);
     }
@@ -153,11 +152,6 @@ function App() {
       e.preventDefault();
   }
 
-  if (description.length > 0){
-    extractDateTime(description)
-    print(description)
-  }
-
     const createdAt = new Date().toISOString(); // Current time in ISO format
   
     // Calculate seconds remaining
@@ -190,6 +184,7 @@ function App() {
       setDeadLineText('');
       setDeadLineDate('');
       setDeadLineTime('');
+      setDeadLine('')
       addCard(newCard);
     
       // Reset the priority states after adding the card
@@ -272,10 +267,10 @@ function App() {
       <Modal Show={showModal && !showLinkModal} hide={hideModal} handleSubmit={handleSubmit} bgColor={darkMode ? 'bg-slate-300' : 'bg-[#1E1E1E]'}>
         <AddTodo
                  titleInput={<InputArea type="text" value={title} name="title" placeholder="Title here..." 
-                          onChange={(e) => setTitle(e.target.value)}
+                          onChange={(e) => {setTitle(e.target.value), extractDateTime(e.target.value)}}
                           className="text-white font-sans p-2 bg-transparent focus:outline-none w-full" />}
                  descriptionInput={
-                          <AddTextArea onChange={(e) => setDescription(e.target.value)} className="font-sans" value={description} placeholder="Description here..." />
+                          <AddTextArea onChange={(e) => {setDescription(e.target.value), extractDateTime(e.target.value)}} className="font-sans" value={description} placeholder="Description here..." />
                           }
                  urgentButton={<button className={`rounded-lg rounded-br-[0px] border-none focus:outline-none p-2 
                   ${isUrgent ? 'bg-red-500' : 'bg-white'}`} onClick={toggleUrgent}>
