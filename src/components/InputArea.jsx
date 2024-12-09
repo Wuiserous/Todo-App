@@ -16,6 +16,9 @@ export default function AddTextArea({ value, onChange, placeholder }) {
   // Adjust height on mount if value is pre-filled
   useEffect(() => {
     handleInput(); // Trigger the height adjustment on initial render
+    if (inputRef.current) {
+      inputRef.current.focus(); // Automatically focus the input field
+    }
   }, [value]); // Re-run if the `value` prop changes
   
   return (
