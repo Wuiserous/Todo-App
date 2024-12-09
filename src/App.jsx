@@ -257,15 +257,15 @@ function App() {
   // Check if the card's createdAt matches the cardEdit value
   card.createdAt === cardEdit ? (
     <div key={index} className={`w-fit  gap-2 border-[#333333] ${card.bgColor ? card.bgColor: 'bg-[#1E1E1E]'}  edit-card-animation  flex flex-col p-4 rounded-[10px] group`}>
-      <InputArea value={card.title} onChange={(e) => handleInputChange(e, 'title')} placeholder="Title here..." />
-      <AddTextArea value={card.description} onChange={(e) => handleInputChange(e, 'description')} placeholder="Description here..." />
+      <InputArea value={card.title} onChange={(e) => {handleInputChange(e, 'title')}} placeholder="Title here..." />
+      <AddTextArea value={card.description} onChange={(e) => {handleInputChange(e, 'description')}} placeholder="Description here..." />
     </div>
   ) : null // If card doesn't match, render nothing
 ))}
 
       </EditModal>
       <Modal Show={showModal && !showLinkModal} hide={hideModal} handleSubmit={handleSubmit} bgColor={darkMode ? 'bg-slate-300' : 'bg-[#1E1E1E]'}>
-        <AddTodo
+        <AddTodo Show={showModal}
                  titleInput={<InputArea type="text" value={title} name="title" placeholder="Title here..." 
                           onChange={(e) => {setTitle(e.target.value), extractDateTime(e.target.value)}}
                           className="text-white font-sans p-2 bg-transparent focus:outline-none w-full" />}
@@ -280,9 +280,6 @@ function App() {
                   ${isImportant ? 'bg-yellow-400' : 'bg-white'}`} onClick={toggleImportant}>
                  <FaRegBell className="text-black" size={25} />
              </button>}
-             taskDeadLineButton={<button className=" bg-white p-2 rounded-lg rounded-br-[0px]" onClick={() => setShowDeadLineModal(true)}>
-             <IoIosTimer className="text-black" size={25} />
-         </button>}
          toDoDeadLineButton={<button className=" bg-white p-2 rounded" onClick={() => setShowDeadLineModal(true)}>
           <IoIosTimer className="text-black" size={25} />
       </button>}

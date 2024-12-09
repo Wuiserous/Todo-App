@@ -62,8 +62,7 @@ export default function AddTodo(props) {
           )}
         </div>
         {props.descriptionInput}
-        {props.urgentButton}
-        {props.importantButton}
+
         {props.taskDeadLineButton}
       </div>
     </>

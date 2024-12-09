@@ -66,7 +66,7 @@ export default function TaskSpace(props) {
   return (
     <div className={`rounded-[13px] relative col-start-2 transition-all duration-300 ease-in-out transform ${props.isExpanded ? 'col-span-3' : 'col-span-1'} hide-scrollbar row-start-2 row-end-5 ${props.bgColor}`}>
       <div className="absolute w-[25px] h-20 top-[40%] right-0 overflow-auto group hide-scrollbar z-10 flex justify-center items-center">{props.expandButton}</div>
-      <div className={`grid absolute w-full h-full expandable-grid gap-2 p-2 ${props.isExpanded ? 'grid-cols-5' : 'grid-cols-4'} hide-scrollbar overflow-auto`}>
+      <div className={`grid absolute w-full h-full expandable-grid gap-2 p-2 ${props.isExpanded ? 'grid-cols-5' : 'grid-cols-4'} hide-scrollbar `}>
         <div className="h-full flex relative flex-col gap-2 col-span-1">
           {columns[0].map((card, index) => (
             <Column columnLength={columns[0].length} handleModal={props.taskModal} addTask={props.addTask} card={card} index={index} EditCard={props.editCard} ExtractDate={props.extractDate} DeleteCard={props.deleteCard} addCard={<div className="absolute border z-10 border-white w-full h-[77px] border-dashed rounded-[10px]"></div>} />

@@ -69,7 +69,7 @@ export default function Column({ card, index, EditCard, ExtractDate, DeleteCard,
   return (
     <>
       {card.type === 'task'
-        ? <div className={`max-w-full relative h-fit gap-2  border-[#333333] ${card.bgColor ? card.bgColor : 'bg-[#1E1E1E]'} hover:shadow-[0_0_15px_5px_rgba(187,134,252,0.5)]  flex flex-col p-4 rounded-[10px] card-animation group`} key={index}>
+        ? <div className={`max-w-full relative card h-fit gap-2  border-[#333333] ${card.bgColor ? card.bgColor : 'bg-[#1E1E1E]'}  flex flex-col p-4 rounded-[10px] card-animation group`} key={index}>
           <h3 onClick={() => handleModal(card.createdAt)} className="text-white font-sans cursor-pointer min-h-[5px] text-[25px]">{card.title}</h3>
           <p onClick={() => handleModal(card.createdAt)} className="text-white font-sans cursor-pointer min-h-[5px]">{card.description}</p>
           <div className="w-full h-fit flex flex-row justify-between">
