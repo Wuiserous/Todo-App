@@ -37,7 +37,7 @@ export default function AddTodo(props) {
 
   return (
     <>
-      <div className="flex flex-col h-auto gap-2">
+      <div className="flex flex-col h-fit gap-2">
         <div className="row-span-1 col-span-10 flex flex-row justify-center items-center rounded-lg rounded-br-[0px]  pr-1 gap-1">
           {props.titleInput}
           {props.priority && (

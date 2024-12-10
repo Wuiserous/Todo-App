@@ -30,7 +30,7 @@ export default function Modal(props) {
             onClick={hideAndSubmit} // Using hideAndSubmit to trigger task submission
         >
             <div
-                className={`w-[500px] h-[150px] ${props.bgColor} rounded-[10px] transform transition-all duration-300 p-2 ${isVisible ? "scale-100 opacity-100" : "scale-50 opacity-0"
+                className={`w-[500px] min-h-[150px] h-auto ${props.bgColor} rounded-[10px] transform transition-all duration-300 p-2 ${isVisible ? "scale-100 opacity-100" : "scale-50 opacity-0"
                     }`}
             >
                 {props.children}
