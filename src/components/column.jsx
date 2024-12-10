@@ -8,7 +8,7 @@ import { PiFlagPennantFill } from "react-icons/pi";
 import { TbAlarmPlus, TbFlagPlus } from "react-icons/tb";
 import ProgressBar from './ProgressBar';
 
-export default function Column({ card, index, EditCard, ExtractDate, DeleteCard, handleModal, addTask }) {
+export default function Column({ card, key, EditCard, ExtractDate, DeleteCard, handleModal, addTask }) {
   const [hoveredButton, setHoveredButton] = useState(null);
   const [visibleDiv, setVisibleDiv] = useState(null); // Tracks the currently visible div 
   const [deadlineText, setDeadlineText] = useState('');
@@ -69,7 +69,7 @@ export default function Column({ card, index, EditCard, ExtractDate, DeleteCard,
   return (
     <>
       {card.type === 'task'
-        ? <div className={`max-w-full relative card h-fit gap-2  border-[#333333] ${card.bgColor ? card.bgColor : 'bg-[#1E1E1E]'}  flex flex-col p-4 rounded-[10px] card-animation group`} key={index}>
+        ? <div className={`max-w-full relative card h-fit gap-2 shadow-lg  border ${card.bgColor ? card.bgColor : 'bg-[#1E1E1E]'}  flex flex-col p-4 ${card.priority === "P1" ? "border-[#ff0000] shadow-[0px_0px_12px_4px_rgba(255,0,0,0.3)]" : card.priority === "P2" ? "border-[#ffff00] shadow-[0px_0px_12px_4px_rgba(255,255,0,0.3)]" : card.priority === "P3" ? "border-[#0000ff] shadow-[0px_0px_12px_4px_rgba(0,0,255,0.3)]" : card.priority === "P4" ? "border-[#808080] shadow-[0px_0px_12px_4px_rgba(128,128,128,0.3)]" : ""} rounded-[10px] card-animation group`} key={key}>
           <h3 onClick={() => handleModal(card.createdAt)} className="text-white font-sans cursor-pointer min-h-[5px] text-[25px]">{card.title}</h3>
           <p onClick={() => handleModal(card.createdAt)} className="text-white font-sans cursor-pointer min-h-[5px]">{card.description}</p>
           <div className="w-full h-fit flex flex-row justify-between">
@@ -247,7 +247,7 @@ export default function Column({ card, index, EditCard, ExtractDate, DeleteCard,
                 />
               ) : null}
             </div>
-          ) : card.priority == 'P4' || card.priority == '' ? (
+          ) : card.priority == 'P4' || card.priority.length <= 0 ? (
             <div className="w-full h-[9px] absolute bottom-[0px] left-[0.1px] flex flex-row">
               <div className={`w-10 h-full bg-[#808080] rounded-[9px] rounded-tl-[0px] ${card.secondsLeft ? 'rounded-tr-[0px]' : null}  rounded-br-[0px]`}></div>
               {card.secondsLeft ? (
@@ -260,7 +260,7 @@ export default function Column({ card, index, EditCard, ExtractDate, DeleteCard,
             </div>
           ) : null}
         </div>
-        : <button onClick={() => addTask()} className="relative z-1 border-[2px] border-dashed opacity-0 hover:opacity-100 flex justify-center items-center border-white/20 w-full h-[125px] rounded-[10px] text-4xl text-white/20" key={index}><IoIosAddCircleOutline /></button>
+        : <button onClick={() => addTask()} className="relative z-1 border-[2px] border-dashed opacity-0 hover:opacity-100 flex justify-center items-center border-white/20 w-full h-[125px] rounded-[10px] text-4xl text-white/20" key={key}><IoIosAddCircleOutline /></button>
       }
     </>
   )

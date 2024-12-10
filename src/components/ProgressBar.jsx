@@ -2,43 +2,26 @@ import React, { useEffect, useState } from "react";
 
 export default function ProgressBar(props) {
   const [progress, setProgress] = useState(0);
-  const [isRed, setIsRed] = useState(false); // State to control the red transition
   const [timeLeft, setTimeLeft] = useState(""); // State to store the time left
 
-  const color = props.color;
-
-  const width = props.isExpanded ? '434px' : '313px';
+  const color = props.color // Default to blue if no color is provided
 
   useEffect(() => {
     const interval = setInterval(() => {
       const currentTime = new Date();
-
-      // Parse props.createdTime (ISO format) into a Date object
       const createdTime = new Date(props.createdTime);
-
-      // Parse props.deadLine (ISO format) into a Date object
       const deadline = new Date(props.deadLine);
 
-      // Calculate total time and time passed in milliseconds
       const totalTime = deadline.getTime() - createdTime.getTime();
       const timePassed = currentTime.getTime() - createdTime.getTime();
 
-      // Calculate the progress percentage
-      const newProgress = Math.min((timePassed / totalTime) * 100, 100); // Clamp progress to 100%
+      const newProgress = Math.min((timePassed / totalTime) * 100, 100);
       setProgress(newProgress);
 
-      // Handle red transition for progress from 91-100%
-      if (newProgress >= 91 && newProgress < 100 && !isRed) {
-        setIsRed(true); // Turn red when progress is between 91-99%
-      } else if (newProgress === 100 && isRed) {
-        setIsRed(false); // After hitting 100%, turn blue
-      }
-
-      // Calculate time left
       const remainingTime = deadline.getTime() - currentTime.getTime();
 
       if (remainingTime <= 0) {
-        setTimeLeft("0 minutes"); // No time left
+        setTimeLeft("0 minutes");
       } else {
         const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
         const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -52,35 +35,81 @@ export default function ProgressBar(props) {
           setTimeLeft(`${minutes} minute${minutes > 1 ? "s" : ""} left`);
         }
       }
-    }, 1000); // Update every second
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [props.createdTime, props.deadLine]);
 
-    return () => clearInterval(interval); // Cleanup on component unmount
-  }, [props.createdTime, props.deadLine, isRed]);
+  const interpolateColor = (startColor, endColor, factor) => {
+    const interpolate = (start, end) => start + (end - start) * factor;
+    const startRGB = startColor.match(/\d+/g).map(Number);
+    const endRGB = endColor.match(/\d+/g).map(Number);
 
+    if (progress >= 100) {
+      return color;
+    }
 
-  // Dynamically determine the color based on progress
-  const getColor = () => {
-    if (isRed) return "red"; // If in red transition (91-100%)
-    if (progress <= 50) return color; // 0-50%: Blue
-    if (progress <= 75) return "yellow"; // 51-75%: Yellow
-    if (progress <= 90) return "orange"; // 76-90%: Orange
-    return color; // After 100%, revert back to blue
+    return `rgb(${interpolate(startRGB[0], endRGB[0])}, ${interpolate(
+      startRGB[1],
+      endRGB[1]
+    )}, ${interpolate(startRGB[2], endRGB[2])})`;
   };
+
+  const getColor = () => {
+    // Return the initial color until 40%
+    if (progress <= 40) return color;
+  
+    // Gradual color transitions based on progress
+    if (progress <= 50) {
+      const factor = (progress - 40) / 10; // Gradual transition from 40% to 50%
+      if (color.toLowerCase() === 'red') {
+        return interpolateColor("rgb(255, 0, 0)", "rgb(255, 255, 0)", factor); // Red to Yellow
+      } else if (color.toLowerCase() === 'yellow') {
+        return interpolateColor("rgb(255, 255, 0)", "rgb(255, 255, 0)", factor); // Yellow to Yellow (no change)
+      } else if (color.toLowerCase() === "blue") {
+        return interpolateColor("rgb(0, 0, 255)", "rgb(255, 255, 0)", factor); // Blue to Yellow
+      } else {
+        return interpolateColor("rgb(128, 128, 128)", "rgb(255, 255, 0)", factor); // Gray to Yellow
+      }
+    }
+  
+    if (progress <= 65) return "yellow";
+    if (progress <= 75) {
+      const factor = (progress - 65) / 10; // Gradual transition from 65% to 75%
+      return interpolateColor("rgb(255, 255, 0)", "rgb(255, 165, 0)", factor); // Yellow to Orange
+    }
+    if (progress <= 90) return "orange";
+    if (progress <= 100) {
+      const factor = (progress - 90) / 10; // Gradual transition from 90% to 100%
+      return interpolateColor("rgb(255, 165, 0)", "rgb(255, 0, 0)", factor); // Orange to Red
+    }
+
+  };
+  
+  
+  
+  
+  
 
   const getBorderRadius = () => {
-    // If progress is between 97% and 100%, gradually increase the rounding
     if (progress >= 95) {
-      // Interpolate border-radius from 0px to 9px as the progress goes from 97% to 100%
-      const radius = (progress - 95) * (9 / 5); // Max radius of 9px when progress is 100%
+      const radius = (progress - 95) * (9 / 5); // Max radius of 9px at 100%
       return `0px 0px ${radius}px 0px`;
     }
-    return '0px'; // No rounding when progress is less than 97%
+    return "0px";
   };
 
-
   return (
-    <div style={{ width: '100%', display: "flex", flexDirection: "column" }}>
-      <p style={{ fontSize: "10px", color: "white", opacity: "0.75", position: "absolute", right: "1px", top: "-13px" }}>
+    <div style={{ width: "100%", display: "flex", flexDirection: "column" }}>
+      <p
+        style={{
+          fontSize: "10px",
+          color: "white",
+          opacity: "0.75",
+          position: "absolute",
+          right: "1px",
+          top: "-13px",
+        }}
+      >
         {progress.toFixed(0)}% {timeLeft}
       </p>
       <div

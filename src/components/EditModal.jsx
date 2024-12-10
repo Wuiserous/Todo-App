@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 export default function EditModal(props) {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -12,6 +13,24 @@ export default function EditModal(props) {
     }
   }, [props.Show]);
 
+  useEffect(() => {
+    // Function to handle Enter key press
+    const handleKeyPress = (e) => {
+      if (e.key === "Enter") {
+        // Hide the modal when Enter key is pressed
+        props.hide();
+      }
+    };
+
+    // Adding event listener for the keydown event
+    document.addEventListener("keydown", handleKeyPress);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [props]);
+
   if (!props.Show) return null;
 
   const hide = (e) => {
@@ -24,9 +43,7 @@ export default function EditModal(props) {
       id="wrapper"
       onClick={hide}
     >
-
       {props.children}
-
     </div>
   );
 }

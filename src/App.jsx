@@ -42,7 +42,7 @@ function App() {
   const [deadLineDate, setDeadLineDate] = useState('');
   const [deadLineTime, setDeadLineTime] = useState('');
   const [deadLine, setDeadLine] = useState('');
-  const [priority, setPriority] = useState('');
+  const [priority, setPriority] = useState('P4');
   const [cardEdit, setCardEdit] = useState('');
 
   const setTaskPriority = (isUrgent, isImportant) => {
@@ -69,6 +69,11 @@ function App() {
         setIsExpanded(false);
       }
     }
+
+    if (event.key === "Enter") {
+      // When Enter key is pressed, call handleSubmit
+      handleSubmit();
+    }
   };
 
   useEffect(() => {
@@ -82,6 +87,7 @@ function App() {
   }, []);
 
   const extractDateTime = async (inputText) => {
+    if (inputText)
     try {
       const response = await axios.post('http://localhost:5000/extract-datetime', {
         inputText,
@@ -90,22 +96,32 @@ function App() {
       setDeadLineDate(date);
       setDeadLineTime(time);
       setDeadLine(deadline);
-      console.log(`Date: ${date}, Time: ${time}, Deadline: ${deadline}`)
+      return deadline
     } catch (error) {
       console.error('Error extracting date/time:', error.response?.data || error.message);
     }
     setDeadLineText('')
-    hideDeadLineModal()
   }
 
-  const toggleUrgent = () => {
-    setIsUrgent(!isUrgent);
-    setTaskPriority(!isUrgent, isImportant);
+  const Priority1 = () => {
+    setIsUrgent(true);
+    setIsImportant(true)
+    setTaskPriority(true, true);
   }
 
-  const toggleImportant = () => {
-    setIsImportant(!isImportant);
-    setTaskPriority(isUrgent, !isImportant);
+  const Priority2= () => {
+    setIsUrgent(true);
+    setTaskPriority(false, true);
+  }
+
+  const Priority3= () => {
+    setIsImportant(true);
+    setTaskPriority(true, false);
+  }
+
+  const Priority4= () => {
+    setIsImportant(false);
+    setTaskPriority(false, false);
   }
 
   const [cards, setCards] = useState([])
@@ -190,7 +206,6 @@ function App() {
       // Reset the priority states after adding the card
       setIsUrgent(false);
       setIsImportant(false);
-      setPriority('');
       setDeadLine('');
       hideModal();
     }
@@ -238,10 +253,10 @@ function App() {
       <ToolBar bgColor={darkMode ? 'bg-slate-300' : 'bg-[#121212]'} 
                Button={<button className="w-10 focus:outline-none h-10 rounded-full flex items-center justify-center" 
                onClick={handleShowModal}>
-                <IoMdAddCircle className={`${darkMode ? 'text-black' : 'text-[#BB86FC]'}`} size={40} />
+                <IoMdAddCircle className={`${darkMode ? 'text-black' : 'text-[#BB86FC] hover:text-purple-600'}`} size={30} />
                </button>} Kanban={<button className="w-10 focus:outline-none h-10 rounded-full flex items-center justify-center" 
                onClick={() => setShowKanban(true)}>
-                <PiKanbanFill className={`${darkMode ? 'text-black' : 'text-[#BB86FC]'}`} size={30} />
+                <PiKanbanFill className={`${darkMode ? 'text-black' : 'text-[#BB86FC] hover:text-purple-600'}`} size={30} />
                </button>}/>
       <NavBar Button={<button className="w-10 h-10 focus:outline-none rounded-full flex items-center justify-center" 
               onClick={() => setDarkMode(!darkMode)}>
@@ -264,7 +279,30 @@ function App() {
 ))}
 
       </EditModal>
-      <Modal Show={showModal && !showLinkModal} hide={hideModal} handleSubmit={handleSubmit} bgColor={darkMode ? 'bg-slate-300' : 'bg-[#1E1E1E]'}>
+      <Modal Show={showModal && !showLinkModal} priority={priority} hide={hideModal} handleSubmit={handleSubmit} bgColor={darkMode ? 'bg-slate-300' : 'bg-[#1E1E1E]'} 
+      Priority={<div className="absolute h-fit w-fit items-center justify-center flex flex-row gap-2 bottom-2">
+        <button className="bg-red-600 w-5 relative rounded-full h-5" onClick={() => {Priority1()}}>
+          <div className='absolute z-2 bg-red-600 top-0 rounded-full w-5 h-5 transform-h duration-500 ease hover:h-20 group flex justify-center items-end p-1'>
+            <span className='opacity-0 text-sm text-black rounded-full transform-opacity duration-500 group-hover:opacity-100 absolute'>P1</span>
+          </div>
+        </button>
+        <button className="bg-yellow-500 w-5 relative rounded-full h-5" onClick={() => {Priority2()}}>
+          <div className='absolute z-2 bg-yellow-500 top-0 rounded-full w-5 h-5 transform-h duration-500 ease hover:h-20 group flex justify-center items-end p-1'>
+          <span className='opacity-0 text-sm text-black rounded-full transform-opacity duration-500 group-hover:opacity-100 absolute'>P2</span>
+          </div>
+        </button>
+        <button className="bg-blue-500 w-5 relative rounded-full h-5" onClick={() => {Priority3()}}>
+          <div className='absolute z-2 bg-blue-500 top-0 rounded-full w-5 h-5 transform-h duration-500 ease hover:h-20 group flex justify-center items-end p-1'>
+            <span className='opacity-0 text-sm text-black rounded-full transform-opacity duration-500 group-hover:opacity-100 absolute'>P3</span>
+          </div>
+        </button>
+        <button className="bg-gray-500 w-5 relative rounded-full h-5" onClick={() => {Priority4()}}>
+          <div className='absolute z-2 bg-gray-500 top-0 rounded-full w-5 h-5 transform-h duration-500 ease hover:h-20 group flex justify-center items-end p-1'>
+            <span className='opacity-0 text-sm text-black rounded-full transform-opacity duration-500 group-hover:opacity-100 absolute'>P4</span>
+          </div>
+        </button>
+    </div>}
+      >
         <AddTodo Show={showModal}
                  titleInput={<InputArea type="text" value={title} name="title" placeholder="Title here..." 
                           onChange={(e) => {setTitle(e.target.value), extractDateTime(e.target.value)}}
@@ -272,14 +310,8 @@ function App() {
                  descriptionInput={
                           <AddTextArea onChange={(e) => {setDescription(e.target.value), extractDateTime(e.target.value)}} className="font-sans" value={description} placeholder="Description here..." />
                           }
-                 urgentButton={<button className={`rounded-lg rounded-br-[0px] border-none focus:outline-none p-2 
-                  ${isUrgent ? 'bg-red-500' : 'bg-white'}`} onClick={toggleUrgent}>
-                          <TbUrgent className="text-black" size={25} />
-                          </button>}
-                 importantButton={<button className={`rounded-lg rounded-br-[0px] border-none focus:outline-none p-2 
-                  ${isImportant ? 'bg-yellow-400' : 'bg-white'}`} onClick={toggleImportant}>
-                 <FaRegBell className="text-black" size={25} />
-             </button>}
+                 
+    
          toDoDeadLineButton={<button className=" bg-white p-2 rounded" onClick={() => setShowDeadLineModal(true)}>
           <IoIosTimer className="text-black" size={25} />
       </button>}
