@@ -26,7 +26,7 @@ export default function AddTextArea({ value, onChange, placeholder }) {
       onInput={handleInput}
       placeholder={placeholder}
       style={{
-        width: "100%",
+        minWidth: "100%",
         resize: "none",
         overflow: "hidden",
         padding: "0",

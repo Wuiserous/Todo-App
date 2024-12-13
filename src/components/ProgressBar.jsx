@@ -121,6 +121,7 @@ export default function ProgressBar(props) {
           transition: "width 0.5s, background-color 0.5s",
         }}
       ></div>
+      <div className="inset-0 rounded-[10px] bg-black bg-opacity-70"></div>
     </div>
   );
 }

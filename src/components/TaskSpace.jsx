@@ -66,31 +66,31 @@ export default function TaskSpace(props) {
   return (
     <div className={`rounded-[13px] relative col-start-2 transition-all duration-300 ease-in-out transform ${props.isExpanded ? 'col-span-3' : 'col-span-1'} hide-scrollbar row-start-2 row-end-5 ${props.bgColor}`}>
       <div className="absolute w-[25px] h-20 top-[40%] right-0 overflow-auto group hide-scrollbar z-10 flex justify-center items-center">{props.expandButton}</div>
-      <div className={`grid absolute w-full h-full expandable-grid gap-2 p-2 ${props.isExpanded ? 'grid-cols-5' : 'grid-cols-4'} hide-scrollbar `}>
+      <div className={`grid absolute overflow-auto w-full h-full expandable-grid gap-2 p-2 ${props.isExpanded ? 'grid-cols-5' : 'grid-cols-4'} hide-scrollbar `}>
         <div className="h-full flex relative flex-col gap-2 col-span-1">
           {columns[0].map((card, index) => (
-            <Column columnLength={columns[0].length} handleModal={props.taskModal} addTask={props.addTask} card={card} key={index} EditCard={props.editCard} ExtractDate={props.extractDate} DeleteCard={props.deleteCard} addCard={<div className="absolute border z-10 border-white w-full h-[77px] border-dashed rounded-[10px]"></div>} />
+            <Column textColor={props.textColor} bgColor={props.bgColor} columnLength={columns[0].length} handleModal={props.taskModal} addTask={props.addTask} card={card} key={index} EditCard={props.editCard} ExtractDate={props.extractDate} DeleteCard={props.deleteCard} addCard={<div className="absolute border z-10 border-white w-full h-[77px] border-dashed rounded-[10px]"></div>} />
           ))}
         </div>
         <div className="h-full relative flex flex-col gap-2 col-span-1">
           {columns[1].map((card, index) => (
-            <Column columnLength={columns[1].length} handleModal={props.taskModal} addTask={props.addTask} card={card} key={index} EditCard={props.editCard} ExtractDate={props.extractDate} DeleteCard={props.deleteCard} addCard={<div className="absolute border z-10 border-white w-full h-[77px] border-dashed rounded-[10px]"></div>} />
+            <Column textColor={props.textColor} bgColor={props.bgColor} columnLength={columns[1].length} handleModal={props.taskModal} addTask={props.addTask} card={card} key={index} EditCard={props.editCard} ExtractDate={props.extractDate} DeleteCard={props.deleteCard} addCard={<div className="absolute border z-10 border-white w-full h-[77px] border-dashed rounded-[10px]"></div>} />
           ))}
         </div>
         <div className="h-full relative flex flex-col gap-2 col-span-1">
           {columns[2].map((card, index) => (
-            <Column columnLength={columns[2].length} handleModal={props.taskModal} addTask={props.addTask} card={card} key={index} EditCard={props.editCard} ExtractDate={props.extractDate} DeleteCard={props.deleteCard} addCard={<div className="absolute border z-10 border-white w-full h-[77px] border-dashed rounded-[10px]"></div>} />
+            <Column textColor={props.textColor} columnLength={columns[2].length} handleModal={props.taskModal} addTask={props.addTask} card={card} key={index} EditCard={props.editCard} ExtractDate={props.extractDate} DeleteCard={props.deleteCard} addCard={<div className="absolute border z-10 border-white w-full h-[77px] border-dashed rounded-[10px]"></div>} />
           ))}
         </div>
         <div className="h-full relative flex flex-col gap-2 col-span-1">
           {columns[3].map((card, index) => (
-            <Column columnLength={columns[3].length} handleModal={props.taskModal} addTask={props.addTask} card={card} key={index} EditCard={props.editCard} ExtractDate={props.extractDate} DeleteCard={props.deleteCard} addCard={<div className="absolute border z-10 border-white w-full h-[77px] border-dashed rounded-[10px]"></div>} />
+            <Column textColor={props.textColor} bgColor={props.bgColor} columnLength={columns[3].length} handleModal={props.taskModal} addTask={props.addTask} card={card} key={index} EditCard={props.editCard} ExtractDate={props.extractDate} DeleteCard={props.deleteCard} addCard={<div className="absolute border z-10 border-white w-full h-[77px] border-dashed rounded-[10px]"></div>} />
           ))}
         </div>
         {props.isExpanded ? (
           <div className="h-full relative flex flex-col gap-2 col-span-1">
             {columns[4].map((card, index) => (
-              <Column columnLength={columns[4].length} handleModal={props.taskModal} addTask={props.addTask} card={card} key={index} EditCard={props.editCard} ExtractDate={props.extractDate} DeleteCard={props.deleteCard} addCard={<div className="absolute border z-10 border-white w-full h-[77px] border-dashed rounded-[10px]"></div>} />
+              <Column textColor={props.textColor} bgColor={props.bgColor} columnLength={columns[4].length} handleModal={props.taskModal} addTask={props.addTask} card={card} key={index} EditCard={props.editCard} ExtractDate={props.extractDate} DeleteCard={props.deleteCard} addCard={<div className="absolute border z-10 border-white w-full h-[77px] border-dashed rounded-[10px]"></div>} />
             ))}
           </div>
         ) : null}

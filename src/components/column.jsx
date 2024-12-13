@@ -69,9 +69,21 @@ export default function Column({ card, key, EditCard, ExtractDate, DeleteCard, h
   return (
     <>
       {card.type === 'task'
-        ? <div className={`max-w-full relative card h-fit gap-2 shadow-lg  border ${card.bgColor ? card.bgColor : 'bg-[#1E1E1E]'}  flex flex-col p-4 ${card.priority === "P1" ? "border-[#ff0000] shadow-[0px_0px_12px_4px_rgba(255,0,0,0.3)]" : card.priority === "P2" ? "border-[#ffff00] shadow-[0px_0px_12px_4px_rgba(255,255,0,0.3)]" : card.priority === "P3" ? "border-[#0000ff] shadow-[0px_0px_12px_4px_rgba(0,0,255,0.3)]" : card.priority === "P4" ? "border-[#808080] shadow-[0px_0px_12px_4px_rgba(128,128,128,0.3)]" : ""} rounded-[10px] card-animation group`} key={key}>
+        ? <div className={`max-w-full relative card h-fit gap-2 shadow-lg ${card.bgColor ? card.bgColor : 'bg-[#1E1E1E]'}  flex flex-col p-4 rounded-[10px] card-animation group`} key={key}>
           <h3 onClick={() => handleModal(card.createdAt)} className="text-white font-sans cursor-pointer min-h-[5px] text-[25px]">{card.title}</h3>
-          <p onClick={() => handleModal(card.createdAt)} className="text-white font-sans cursor-pointer min-h-[5px]">{card.description}</p>
+          <p
+      onClick={() => handleModal(card.createdAt)}
+      className="text-white font-sans cursor-pointer min-h-[5px]"
+    >
+      {/* Truncate the description and add ellipsis */}
+      {(() => {
+        const wordLimit = 35;
+        const words = card.description.split(' ');
+        return words.length > wordLimit
+          ? words.slice(0, wordLimit).join(' ') + '...'
+          : card.description;
+      })()}
+    </p>
           <div className="w-full h-fit flex flex-row justify-between">
             <button
               className="focus:outline-none relative flex items-center justify-center opacity-0 group-hover:opacity-100 w-fit h-fit p-1 rounded-full hover:bg-white/20"

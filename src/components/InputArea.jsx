@@ -31,7 +31,6 @@ export default function AddTextArea({ value, onChange, placeholder }) {
       style={{
         width: "100%",
         fontSize: "1.8rem",
-        color: "white",
         resize: "none",
         overflow: "hidden",
         padding: "0",

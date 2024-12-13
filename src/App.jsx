@@ -24,6 +24,8 @@ import axios from 'axios';
 import React from "react";
 import AddTextArea from './components/TextArea';
 import InputArea from './components/InputArea';
+import Kanban from './components/Kanban';
+import { LuLayoutDashboard } from "react-icons/lu";
 
 
 function App() {
@@ -44,6 +46,7 @@ function App() {
   const [deadLine, setDeadLine] = useState('');
   const [priority, setPriority] = useState('P4');
   const [cardEdit, setCardEdit] = useState('');
+  const [space, setSpace] = useState(false)
 
   const setTaskPriority = (isUrgent, isImportant) => {
     if (isUrgent && isImportant) {
@@ -56,6 +59,10 @@ function App() {
       setPriority('P4'); // Not Urgent and Not Important -> Very Low Priority
     }
   };
+
+  const handleSpace = () => {
+    setSpace(!space)
+  }
   
 
   const handleKeyDown = (event) => {
@@ -189,6 +196,7 @@ function App() {
         deadLine,
         priority,
         createdAt,
+        id: createdAt,
         secondsLeft // Add the calculated value to the card
       };
   
@@ -250,28 +258,35 @@ function App() {
 
   return (
     <div className={`w-[100vw] overflow-hidden p-2 gap-2 h-[100vh] grid grid-cols-[50px_1100px_60px_1fr] grid-rows-[50px_1fr_1fr_1fr]`}>
-      <ToolBar bgColor={darkMode ? 'bg-slate-300' : 'bg-[#121212]'} 
+      <ToolBar bgColor={darkMode ? 'bg-white' : 'bg-[#121212]'} 
                Button={<button className="w-10 focus:outline-none h-10 rounded-full flex items-center justify-center" 
                onClick={handleShowModal}>
                 <IoMdAddCircle className={`${darkMode ? 'text-black' : 'text-[#BB86FC] hover:text-purple-600'}`} size={30} />
                </button>} Kanban={<button className="w-10 focus:outline-none h-10 rounded-full flex items-center justify-center" 
-               onClick={() => setShowKanban(true)}>
-                <PiKanbanFill className={`${darkMode ? 'text-black' : 'text-[#BB86FC] hover:text-purple-600'}`} size={30} />
+               onClick={() => handleSpace()}>
+                {space == true? 
+      <LuLayoutDashboard className={`${darkMode ? 'text-black' : 'text-[#BB86FC] hover:text-purple-600'}`} onClick={handleSpace} size={30} />
+      : 
+      <PiKanbanFill className={`${darkMode ? 'text-black' : 'text-[#BB86FC] hover:text-purple-600'}`} onClick={handleSpace} size={30} />
+      }
                </button>}/>
       <NavBar Button={<button className="w-10 h-10 focus:outline-none rounded-full flex items-center justify-center" 
               onClick={() => setDarkMode(!darkMode)}>
               {darkMode ? <AiFillMoon className='text-black' size={25} /> : <MdWbSunny size={25} />}
               </button>} 
-              bgColor={darkMode ? 'bg-slate-300' : 'bg-[#121212]'} />
-      
-      <TaskSpace addTask={handleShowModal} taskModal={handleShowEditModal} deleteCard={deleteCard} extractDate={extractDateTime} editCard={editCard} cards={cards} bgColor={darkMode ? 'bg-slate-300' : 'bg-[#121212]'} hoveredCardIndex={hoveredCardIndex} isExpanded={isExpanded} expandButton={<button className="absolute right-[-12px] transform duration-300 group-hover:right-[-2px] h-20 w-5 bg-white/5 backdrop-blur-[1px] border border-white/10  p-1 rounded rounded-tr-[1px] rounded-br-[0px]" onClick={() => setIsExpanded(!isExpanded)}>{ isExpanded ? <FaAngleLeft /> : <FaAngleRight />}</button>} />
-      <ProgressSpace bgColor={darkMode ? 'bg-slate-300' : 'bg-[#121212]'} />
-      <MotivationSpace bgColor={darkMode ? 'bg-slate-300' : 'bg-[#121212]'} />
-      <EditModal Show={showEditModal} hide={hideEditModal} bgColor={darkMode ? 'bg-slate-300' : 'bg-[#1E1E1E]'}>
+              bgColor={darkMode ? 'bg-white' : 'bg-[#121212]'} />
+      {space == true? 
+      <Kanban bgColor={darkMode ? 'bg-white' : 'bg-[#121212]'} cards={cards} isExpanded={isExpanded}/>
+      : 
+      <TaskSpace textColor={darkMode ? 'text-black' : 'text-white'} addTask={handleShowModal} taskModal={handleShowEditModal} deleteCard={deleteCard} extractDate={extractDateTime} editCard={editCard} cards={cards} bgColor={darkMode ? 'bg-white' : 'bg-[#121212]'} hoveredCardIndex={hoveredCardIndex} isExpanded={isExpanded} expandButton={<button className="absolute right-[-12px] transform duration-300 group-hover:right-[-2px] h-20 w-5 bg-white/5 backdrop-blur-[1px] border border-white/10  p-1 rounded rounded-tr-[1px] rounded-br-[0px]" onClick={() => setIsExpanded(!isExpanded)}>{ isExpanded ? <FaAngleLeft /> : <FaAngleRight />}</button>} />
+      }
+      <ProgressSpace bgColor={darkMode ? 'bg-white' : 'bg-[#121212]'} />
+      <MotivationSpace bgColor={darkMode ? 'bg-white' : 'bg-[#121212]'} />
+      <EditModal textColor={darkMode ? 'text-black' : 'text-white'} Show={showEditModal} hide={hideEditModal} bgColor={darkMode ? 'bg-white' : 'bg-[#1E1E1E]'}>
       {cards.map((card, index) => (
   // Check if the card's createdAt matches the cardEdit value
   card.createdAt === cardEdit ? (
-    <div key={index} className={`w-fit  gap-2 border-[#333333] ${card.bgColor ? card.bgColor: 'bg-[#1E1E1E]'}  edit-card-animation  flex flex-col p-4 rounded-[10px] group`}>
+    <div key={index} className={`w-fit gap-2 border-[#333333] ${card.bgColor ? card.bgColor: 'bg-[#1E1E1E]'}  edit-card-animation  flex flex-col p-4 rounded-[10px] group`}>
       <InputArea value={card.title} onChange={(e) => {handleInputChange(e, 'title')}} placeholder="Title here..." />
       <AddTextArea value={card.description} onChange={(e) => {handleInputChange(e, 'description')}} placeholder="Description here..." />
     </div>
@@ -279,7 +294,7 @@ function App() {
 ))}
 
       </EditModal>
-      <Modal Show={showModal && !showLinkModal} priority={priority} hide={hideModal} handleSubmit={handleSubmit} bgColor={darkMode ? 'bg-slate-300' : 'bg-[#1E1E1E]'} 
+      <Modal textColor={darkMode ? 'text-black' : 'text-white'} Show={showModal && !showLinkModal} priority={priority} hide={hideModal} handleSubmit={handleSubmit} bgColor={darkMode ? 'bg-white' : 'bg-[#1E1E1E]'} 
       Priority={<div className="absolute h-fit w-fit items-center justify-center flex flex-row gap-2 bottom-2">
         <button className="bg-red-600 w-5 relative rounded-full h-5" onClick={() => {Priority1()}}>
           <div className='absolute z-2 bg-red-600 top-0 rounded-full w-5 h-5 transform-h duration-500 ease hover:h-20 group flex justify-center items-end p-1'>
@@ -305,10 +320,10 @@ function App() {
       >
         <AddTodo Show={showModal}
                  titleInput={<InputArea type="text" value={title} name="title" placeholder="Title here..." 
-                          onChange={(e) => {setTitle(e.target.value), extractDateTime(e.target.value)}}
-                          className="text-white font-sans p-2 bg-transparent focus:outline-none w-full" />}
+                          onChange={(e) => {setTitle(e.target.value)}}
+                          className="font-sans p-2 bg-transparent focus:outline-none w-full" />}
                  descriptionInput={
-                          <AddTextArea onChange={(e) => {setDescription(e.target.value), extractDateTime(e.target.value)}} className="font-sans" value={description} placeholder="Description here..." />
+                          <AddTextArea onChange={(e) => {setDescription(e.target.value)}} className="font-sans" value={description} placeholder="Description here..." />
                           }
                  
     
