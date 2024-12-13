@@ -8,7 +8,7 @@ import { PiFlagPennantFill } from "react-icons/pi";
 import { TbAlarmPlus, TbFlagPlus } from "react-icons/tb";
 import ProgressBar from './ProgressBar';
 
-export default function Column({ card, key, EditCard, ExtractDate, DeleteCard, handleModal, addTask }) {
+export default function Column({ card, id, EditCard, ExtractDate, DeleteCard, handleModal, addTask }) {
   const [hoveredButton, setHoveredButton] = useState(null);
   const [visibleDiv, setVisibleDiv] = useState(null); // Tracks the currently visible div 
   const [deadlineText, setDeadlineText] = useState('');
@@ -69,7 +69,7 @@ export default function Column({ card, key, EditCard, ExtractDate, DeleteCard, h
   return (
     <>
       {card.type === 'task'
-        ? <div className={`max-w-full relative card h-fit gap-2 shadow-lg ${card.bgColor ? card.bgColor : 'bg-[#1E1E1E]'}  flex flex-col p-4 rounded-[10px] card-animation group`} key={key}>
+        ? <div className={`max-w-full relative card h-fit gap-2 shadow-lg ${card.bgColor ? card.bgColor : 'bg-[#1E1E1E]'}  flex flex-col p-4 rounded-[10px] card-animation group`} key={id}>
           <h3 onClick={() => handleModal(card.createdAt)} className="text-white font-sans cursor-pointer min-h-[5px] text-[25px]">{card.title}</h3>
           <p
       onClick={() => handleModal(card.createdAt)}
@@ -272,7 +272,7 @@ export default function Column({ card, key, EditCard, ExtractDate, DeleteCard, h
             </div>
           ) : null}
         </div>
-        : <button onClick={() => addTask()} className="relative z-1 border-[2px] border-dashed opacity-0 hover:opacity-100 flex justify-center items-center border-white/20 w-full h-[125px] rounded-[10px] text-4xl text-white/20" key={key}><IoIosAddCircleOutline /></button>
+        : <button onClick={() => addTask()} className="relative z-1 border-[2px] border-dashed opacity-0 hover:opacity-100 flex justify-center items-center border-white/20 w-full h-[125px] rounded-[10px] text-4xl text-white/20" key={id}><IoIosAddCircleOutline /></button>
       }
     </>
   )

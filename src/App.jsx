@@ -19,7 +19,7 @@ import { FaRegBell } from "react-icons/fa";
 import { IoIosTimer } from "react-icons/io";
 import DeadLineModal from './components/DeadLineModal';
 import EditModal from './components/EditModal';
-import { PiKanbanFill } from "react-icons/pi";
+import { PiKanban } from "react-icons/pi";
 import axios from 'axios';
 import React from "react";
 import AddTextArea from './components/TextArea';
@@ -47,6 +47,8 @@ function App() {
   const [priority, setPriority] = useState('P4');
   const [cardEdit, setCardEdit] = useState('');
   const [space, setSpace] = useState(false)
+  const [label, setLabel] = useState('')
+  const [labels, setLabels] = useState([])
 
   const setTaskPriority = (isUrgent, isImportant) => {
     if (isUrgent && isImportant) {
@@ -146,6 +148,14 @@ function App() {
     console.log(card)
   }
 
+  function handleLabel(label){
+    setLabel(label);
+  }
+
+  function addLabel(newLabel) {
+    setLabels([...labels, newLabel])
+  }
+
   const editCard = (newCard) => {
     setCards(cards.map((card) => {
       if (card.createdAt === newCard.createdAt) {
@@ -193,6 +203,7 @@ function App() {
         isImportant,
         deadLineDate,
         deadLineTime,
+        label,
         deadLine,
         priority,
         createdAt,
@@ -210,6 +221,7 @@ function App() {
       setDeadLineTime('');
       setDeadLine('')
       addCard(newCard);
+      setLabel('')
     
       // Reset the priority states after adding the card
       setIsUrgent(false);
@@ -267,7 +279,7 @@ function App() {
                 {space == true? 
       <LuLayoutDashboard className={`${darkMode ? 'text-black' : 'text-[#BB86FC] hover:text-purple-600'}`} onClick={handleSpace} size={30} />
       : 
-      <PiKanbanFill className={`${darkMode ? 'text-black' : 'text-[#BB86FC] hover:text-purple-600'}`} onClick={handleSpace} size={30} />
+      <PiKanban className={`${darkMode ? 'text-black' : 'text-[#BB86FC] hover:text-purple-600'}`} onClick={handleSpace} size={30} />
       }
                </button>}/>
       <NavBar Button={<button className="w-10 h-10 focus:outline-none rounded-full flex items-center justify-center" 
@@ -294,7 +306,7 @@ function App() {
 ))}
 
       </EditModal>
-      <Modal textColor={darkMode ? 'text-black' : 'text-white'} Show={showModal && !showLinkModal} priority={priority} hide={hideModal} handleSubmit={handleSubmit} bgColor={darkMode ? 'bg-white' : 'bg-[#1E1E1E]'} 
+      <Modal addLabel={addLabel} labels={labels} handleLabel={handleLabel} textColor={darkMode ? 'text-black' : 'text-white'} Show={showModal && !showLinkModal} priority={priority} hide={hideModal} handleSubmit={handleSubmit} bgColor={darkMode ? 'bg-white' : 'bg-[#1E1E1E]'} 
       Priority={<div className="absolute h-fit w-fit items-center justify-center flex flex-row gap-2 bottom-2">
         <button className="bg-red-600 w-5 relative rounded-full h-5" onClick={() => {Priority1()}}>
           <div className='absolute z-2 bg-red-600 top-0 rounded-full w-5 h-5 transform-h duration-500 ease hover:h-20 group flex justify-center items-end p-1'>
