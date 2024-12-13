@@ -44,11 +44,13 @@ export default function Kanban(props) {
 
     const sensors = useSensors(
         useSensor(PointerSensor),
+        useSensor(TouchSensor),
         useSensor(MouseSensor),
         useSensor(KeyboardSensor, {
             coordinateGetter: sortableKeyboardCoordinates,
         })
     );
+
 
     return (
         <DndContext sensors={sensors} onDragEnd={handleDragEnd} onDragOver={handleDragOver} collisionDetection={closestCorners}>
@@ -79,6 +81,7 @@ function Column({ id, title, cards, isOver }) {
         transform: CSS.Transform.toString(transform),
         zIndex: isDragging ? 9999 : "auto", // Elevate dragged item
         position: "relative", // Ensure correct layering
+        touchAction: "none",
         border: isOver ? "2px dashed #4CAF50" : isDragging ? "2px solid blue" : "", // Highlight drop target
         opacity: isDragging ? 0.8 : 1, // Dim dragged column
     };
